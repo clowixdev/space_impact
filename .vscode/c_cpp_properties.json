@@ -1,0 +1,29 @@
+{
+    "configurations": [
+        {
+            "name": "OpenGL",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/../dependencies/GLFW/include/",
+                "${workspaceFolder}/../dependencies/GLAD/include/",
+                "${workspaceFolder}/../dependencies/GLM/"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/../dependencies/GLFW/lib-mingw-w64"
+                ]
+            },
+            "windowsSdkVersion": "10.0.19041.0",
+            "compilerPath": "C:/msys64/mingw64/bin/gcc.exe",
+            "cStandard": "c99",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x64"
+        }
+    ],
+    "version": 4
+}
