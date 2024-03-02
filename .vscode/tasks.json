@@ -1,0 +1,36 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "OpenGLx32 Build",
+            "type": "shell",
+            "command": "gcc",
+            "windows": {
+                "args": [
+                    "${workspaceRoot}/src/main.c",
+
+                    "${workspaceRoot}/../dependencies/GLAD/src/glad.c",
+                    
+                    "-g",
+                    "--std=c99",
+
+                    "-I${workspaceRoot}/../dependencies/GLFW/include",
+                    "-I${workspaceFolder}/../dependencies/GLAD/include",
+                    "-I${workspaceFolder}/../dependencies/GLM",
+
+                    "-lopengl32",
+                    "-L${workspaceRoot}/../dependencies/GLFW/lib-mingw-w64",
+                    
+                    "-static",
+                    "-lglfw3dll",
+                    "-o",
+                    "${workspaceRoot}/builds/windows/main"
+                ]
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

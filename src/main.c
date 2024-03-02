@@ -1,11 +1,12 @@
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include <glfw/glfw3.h>
 
 #include <stdio.h> 
+#include <stdlib.h>
 
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 600
-#define WINDOW_CAPTION "OPENGL notes on rekovalev.site"
+#define WINDOW_WIDTH 200
+#define WINDOW_HEIGHT 200
+#define WINDOW_CAPTION "Wow"
 
 // Функция-callback для изменения размеров буфера кадра в случае изменения размеров поверхности окна
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -20,7 +21,7 @@ int main(void)
     // Инициализация GLFW3
     if (!glfwInit())
     {
-        std::cout << "GLFW init error\n";
+        printf("GLFW init error\n");
         return -1;
     }
 
@@ -35,7 +36,7 @@ int main(void)
     window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_CAPTION, NULL, NULL);
     if (!window)
     {
-        std::cout << "GLFW create window error\n";
+        printf("GLFW create window error\n");
         return -1;
     }
 
@@ -47,7 +48,7 @@ int main(void)
     // Загрузка функций OpenGL с помощью GLAD
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
-        std::cout << "GLAD load GL error\n";
+        printf("GLAD load GL error\n");
         return -1;
     }
 
