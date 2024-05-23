@@ -7,22 +7,27 @@
             "command": "gcc",
             "windows": {
                 "args": [
-                    "${workspaceRoot}/src/main.c",
-
-                    "${workspaceRoot}/../dependencies/GLAD/src/glad.c",
+                    "${workspaceRoot}/src/main.c",                    
                     
                     "-g",
                     "--std=c99",
 
                     "-I${workspaceRoot}/../dependencies/GLFW/include",
-                    "-I${workspaceFolder}/../dependencies/GLAD/include",
-                    "-I${workspaceFolder}/../dependencies/GLM",
+                    "-I${workspaceRoot}/../dependencies/FREEGLUT/include",
+                    "-I${workspaceFolder}/../dependencies/GLEW/include",
 
                     "-lopengl32",
+                    "-lglu32",
+
+                    "-L${workspaceFolder}/../dependencies/GLEW/bin/Release/x64",
+                    "-lglew32",
+
+                    "-L${workspaceFolder}/../dependencies/FREEGLUT/bin/x64",
+                    "-lfreeglut",
+
                     "-L${workspaceRoot}/../dependencies/GLFW/lib-mingw-w64",
-                    
-                    "-static",
                     "-lglfw3dll",
+
                     "-o",
                     "${workspaceRoot}/builds/windows/main"
                 ]

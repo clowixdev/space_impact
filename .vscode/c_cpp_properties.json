@@ -4,9 +4,9 @@
             "name": "OpenGL",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/../dependencies/GLFW/include/",
-                "${workspaceFolder}/../dependencies/GLAD/include/",
-                "${workspaceFolder}/../dependencies/GLM/"
+                "${workspaceFolder}/../dependencies/GLFW/include",
+                "${workspaceFolder}/../dependencies/GLEW/include",
+                "${workspaceFolder}/../dependencies/GLUT/include"
             ],
             "defines": [
                 "_DEBUG",
@@ -19,7 +19,7 @@
                 ]
             },
             "windowsSdkVersion": "10.0.19041.0",
-            "compilerPath": "C:/msys64/mingw64/bin/gcc.exe",
+            "compilerPath": "C:/msys64/mingw64/bin/x86_64-w64-mingw32-gcc.exe",
             "cStandard": "c99",
             "cppStandard": "c++17",
             "intelliSenseMode": "gcc-x64"
