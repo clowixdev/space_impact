@@ -12,6 +12,7 @@
                     "-g",
                     "--std=c99",
 
+                    "-I${workspaceFolder}/../dependencies/STB_IMAGE/include",
                     "-I${workspaceRoot}/../dependencies/GLFW/include",
                     "-I${workspaceRoot}/../dependencies/FREEGLUT/include",
                     "-I${workspaceFolder}/../dependencies/GLEW/include",
