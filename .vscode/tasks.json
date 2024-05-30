@@ -17,6 +17,8 @@
                     "-I${workspaceRoot}/../dependencies/FREEGLUT/include",
                     "-I${workspaceFolder}/../dependencies/GLEW/include",
 
+                    "-lwinmm",
+
                     "-lopengl32",
                     "-lglu32",
 
@@ -30,7 +32,7 @@
                     "-lglfw3dll",
 
                     "-o",
-                    "${workspaceRoot}/builds/windows/main"
+                    "${workspaceRoot}/builds/windows/space_impact"
                 ]
             },
             "group": {

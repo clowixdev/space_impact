@@ -46,6 +46,7 @@
         "typeinfo": "c",
         "stdio.h": "c",
         "gl.h": "c",
-        "glfw3.h": "c"
+        "glfw3.h": "c",
+        "stdlib.h": "c"
     }
 }
