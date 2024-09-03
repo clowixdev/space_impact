@@ -128,9 +128,6 @@ void draw_scene() {
     }
 
     if (player.playerLives == 0) {
-        glutSwapBuffers();
-        glClear(GL_COLOR_BUFFER_BIT);
-
         //draw background
         draw_rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 10);
 
@@ -151,9 +148,6 @@ void draw_scene() {
         draw_text((WINDOW_WIDTH / 2) - 120, WINDOW_HEIGHT / 2 - 80, closing);
 
     } else if (boss.bossLives == 0) {
-        glutSwapBuffers();
-        glClear(GL_COLOR_BUFFER_BIT);
-
         //draw background
         draw_rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 10);
 
@@ -182,6 +176,8 @@ void draw_scene() {
 
         //draw boss
         draw_rectangle(boss.bossX, boss.bossY, boss.bossSize, boss.bossSize, 6);
+
+        //...
 
         //draw boss_bullet
         draw_rectangle(boss_bullet.bulletX, boss_bullet.bulletY, boss_bullet.bulletSize, boss_bullet.bulletSize, 2);
@@ -236,17 +232,24 @@ bool changed_to_fourth = false;
 bool player_is_dead = false;
 bool boss_is_dead = false;
 
-
 void update() {
 
     if (player.playerLives == 0 && player_is_dead == false) {
         PlaySound("..//..//sounds//lose.wav", NULL, SND_FILENAME | SND_ASYNC);
         player_is_dead = true;
+
+        small_asteroid.spawn = false;
+        medium_asteroid.spawn = false;
+        big_asteroid.spawn = false;
     }
 
     if (boss.bossLives == 0 && boss_is_dead == false) {
         PlaySound("..//..//sounds//win.wav", NULL, SND_FILENAME | SND_ASYNC);
         boss_is_dead = true;
+
+        small_asteroid.spawn = false;
+        medium_asteroid.spawn = false;
+        big_asteroid.spawn = false;
     }
 
     if (player.playerScore == 5 && changed_to_second == false) {
@@ -292,7 +295,7 @@ void update() {
     //update heart position
     if (heart.heartX >= 0) {
         heart.heartX -= heart.heartSpeed;
-        if (heart.heartX >= WINDOW_WIDTH) {
+        if (heart.heartX <= 0) {
             heart.heartY = -heart.heartSize;
             heart.heartX = -heart.heartSize;
         }
@@ -363,7 +366,10 @@ void update() {
     if (medium_asteroid.spawn == true && player.currentLevel != 4) {
         medium_asteroid.asteroidX -= medium_asteroid.asteroidSpeed;
         if (medium_asteroid.asteroidX <= 0 && player.playerLives > 0) {
-            medium_asteroid.asteroidY = rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - medium_asteroid.asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
+
+            medium_asteroid.asteroidY = rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - \
+            medium_asteroid.asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
+
             medium_asteroid.asteroidX = WINDOW_WIDTH - medium_asteroid.asteroidSize;
         }
     
@@ -373,13 +379,14 @@ void update() {
         && bullet.bulletY <= medium_asteroid.asteroidY + medium_asteroid.asteroidSize \
         && bullet.bulletX >= medium_asteroid.asteroidX \
         && bullet.bulletX <= medium_asteroid.asteroidX + medium_asteroid.asteroidSize) {
-
             player.playerScore += 1;
             PlaySound("..//..//sounds//hit_asteroid.wav", NULL, SND_FILENAME | SND_ASYNC);
             bullet.bulletY = -bullet.bulletSize;
             bullet.bulletX = -bullet.bulletSize;
             
-            medium_asteroid.asteroidY = rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - medium_asteroid.asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
+            medium_asteroid.asteroidY = rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - \
+            medium_asteroid.asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
+            
             medium_asteroid.asteroidX = WINDOW_WIDTH - medium_asteroid.asteroidSize;
         }
 
@@ -419,6 +426,7 @@ void update() {
             bullet.bulletY = -bullet.bulletSize;
             bullet.bulletX = -bullet.bulletSize;
             
+            //random acceptable position on screen
             big_asteroid.asteroidY = rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - big_asteroid.asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
             big_asteroid.asteroidX = WINDOW_WIDTH - big_asteroid.asteroidSize;
         }
@@ -884,11 +892,6 @@ void init_game() {
 
 void handle_keyboard(unsigned char key, int x, int y) {
     switch (key) {
-        case 27: //ESC
-            PlaySound("..//..//sounds//exit.wav", NULL, SND_FILENAME | SND_ASYNC);
-            sleep(1);
-            exit(0);
-            break;
         case 32: //SPACE
             if (bullet.bulletX < 0 && player.playerLives > 0) {
                 bullet.bulletY = player.playerY + player.playerSize / 2 - bullet.bulletSize / 2;
@@ -896,6 +899,11 @@ void handle_keyboard(unsigned char key, int x, int y) {
 
                 PlaySound("..//..//sounds//shot.wav", NULL, SND_FILENAME | SND_ASYNC);
             }
+            break;
+        case 27: //ESC
+            PlaySound("..//..//sounds//exit.wav", NULL, SND_FILENAME | SND_ASYNC);
+            sleep(1);
+            exit(0);
             break;
     }
 }
@@ -938,7 +946,7 @@ void handle_menu_keyboard(unsigned char key, int x, int y) {
             break;
         case 13: //ENTER
             if (main_menu.option == 1) {
-                PlaySound(NULL, NULL, SND_ASYNC);
+                printf("Player started the game, initializing rest of things...\n");
                 PlaySound("..//..//sounds//start.wav", NULL, SND_FILENAME | SND_ASYNC);
 
                 init_game();
