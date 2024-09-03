@@ -14,30 +14,31 @@
         Toby Fox (Undertale game)
 
 ### About
-    This is a copy of old mobile game Space Impact with our own ideas for some
-    game mechanics. All the development was conducted in C language with OpenGL, 
-    especially using freeglut. To load textures, we used STB_IMAGE library that
-    we found in the Ithernet
+
+This is a copy of old mobile game Space Impact with our own ideas for some
+game mechanics. All the development was conducted in C language with OpenGL, 
+especially using freeglut. To load textures, we used STB_IMAGE library that
+we found in the Ithernet
 
 ### Compiling
-    You can compile our game by using compile task from tasks.json. 
-    All the dependencies that should be located in ../dependecies:
+You can compile our game by using compile task from tasks.json. 
+All the dependencies that should be located in ../dependecies:
 
-        1. STB_IMAGE
-        2. GLFW
-        3. FREEGLUT
-        4. GLEW
+    1. STB_IMAGE
+    2. GLFW
+    3. FREEGLUT
+    4. GLEW
 
-    You should also add to your /system32/ directory these .dll files:
+You should also add to your /system32/ directory these .dll files:
 
-        1. freeglut.dll
-        2. glew32.dll
-        3. glfw3.dll
+    1. freeglut.dll
+    2. glew32.dll
+    3. glfw3.dll
 
-    All the needed files you can find in your lovely browser ~ (^-^ ~)
-    The compiled file will wait you in ./builds/windows/ directory
+All the needed files you can find in your lovely browser ~ (^-^ ~)
+The compiled file will wait you in ./builds/windows/ directory
 
-    Have fun testing our project!
+Have fun testing our project!
 
 ### TODO
     1. "Boss" on level 4 - DONE!
