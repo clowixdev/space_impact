@@ -7,24 +7,32 @@
             "command": "gcc",
             "windows": {
                 "args": [
-                    "${workspaceRoot}/src/main.c",
-
-                    "${workspaceRoot}/../dependencies/GLAD/src/glad.c",
+                    "${workspaceRoot}/src/main.c",                    
                     
                     "-g",
                     "--std=c99",
 
+                    "-I${workspaceRoot}/../dependencies/STB_IMAGE/include",
                     "-I${workspaceRoot}/../dependencies/GLFW/include",
-                    "-I${workspaceFolder}/../dependencies/GLAD/include",
-                    "-I${workspaceFolder}/../dependencies/GLM",
+                    "-I${workspaceRoot}/../dependencies/FREEGLUT/include",
+                    "-I${workspaceRoot}/../dependencies/GLEW/include",
+
+                    "-lwinmm",
 
                     "-lopengl32",
+                    "-lglu32",
+
+                    "-L${workspaceRoot}/../dependencies/GLEW/bin/Release/x64",
+                    "-lglew32",
+
+                    "-L${workspaceRoot}/../dependencies/FREEGLUT/bin/x64",
+                    "-lfreeglut",
+
                     "-L${workspaceRoot}/../dependencies/GLFW/lib-mingw-w64",
-                    
-                    "-static",
                     "-lglfw3dll",
+
                     "-o",
-                    "${workspaceRoot}/builds/windows/main"
+                    "${workspaceRoot}/builds/windows/space_impact"
                 ]
             },
             "group": {
