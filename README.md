@@ -45,3 +45,4 @@ Have fun testing our project!
     2. 50% chance to drop heart on small asteroid kill - DONE!
     3. Add textures to all objects - DONE!
     4. add sounds - DONE!
+### ACCEPTED!
