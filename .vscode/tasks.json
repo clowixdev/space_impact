@@ -12,6 +12,12 @@
                     "-g",
                     "--std=c99",
 
+                    "${workspaceRoot}/src/draw_objects.c",
+                    "${workspaceRoot}/src/init.c",
+                    "${workspaceRoot}/src/keyboard_handler.c",
+                    "${workspaceRoot}/src/update.c",
+                    "-I${workspaceRoot}/src/include",
+
                     "-I${workspaceRoot}/../dependencies/STB_IMAGE/include",
                     "-I${workspaceRoot}/../dependencies/GLFW/include",
                     "-I${workspaceRoot}/../dependencies/FREEGLUT/include",

@@ -47,6 +47,22 @@
         "stdio.h": "c",
         "gl.h": "c",
         "glfw3.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "objects.h": "c",
+        "windows.h": "c",
+        "draw_objects.h": "c",
+        "init.h": "c",
+        "update.h": "c",
+        "stdbool.h": "c",
+        "keyboard_handler.h": "c",
+        "main.h": "c",
+        "init_game.h": "c",
+        "game_objects.h": "c",
+        "mmsystem.h": "c",
+        "unistd.h": "c",
+        "external_pointers.h": "c",
+        "extern_pointers.h": "c",
+        "draw.h": "c",
+        "constants.h": "c"
     }
 }
