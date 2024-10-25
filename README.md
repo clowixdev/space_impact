@@ -1,8 +1,9 @@
 # Coursework on "Data structures". 1 course, 2 semester, IC of SPBSTU
 
-### It is "Space Impact" game made on C with OpenGL
+## It is "Space Impact" game made on C with OpenGL
 
 ### Authors
+
     Devs: 
         Mishenev Nikita (clowixdev)
         Kvashennikova Veronika (sssauerkraut)
@@ -21,6 +22,7 @@ especially using freeglut. To load textures, we used STB_IMAGE library that
 we found in the Ithernet
 
 ### Compiling
+
 You can compile our game by using compile task from tasks.json. 
 All the dependencies that should be located in ../dependecies:
 
@@ -38,9 +40,12 @@ You should also add to your /system32/ directory these .dll files:
 All the needed files you can find in your lovely browser ~ (^-^ ~)
 The compiled file will wait you in ./builds/windows/ directory
 
+You can compile program in Linux using build.sh script.
+
 Have fun testing our project!
 
 ### TODO
+
     1. "Boss" on level 4 - DONE!
     2. 50% chance to drop heart on small asteroid kill - DONE!
     3. Add textures to all objects - DONE!
