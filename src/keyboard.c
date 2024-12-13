@@ -13,9 +13,8 @@
 void handle_keyboard(unsigned char key, int x, int y) {
     switch (key) {
         case 32: //SPACE
-            if (bullet.bulletX < 0 && player.playerLives > 0) {
-                bullet.bulletY = player.playerY + player.playerSize / 2 - bullet.bulletSize / 2;
-                bullet.bulletX = player.playerX;
+            if (player.playerLives > 0) {
+                add_bullet();
 
                 PlaySound("..//..//sounds//shot.wav", NULL, SND_FILENAME | SND_ASYNC);
             }

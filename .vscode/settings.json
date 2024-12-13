@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.cu": "c",
         "array": "c",
         "atomic": "c",
         "bit": "c",
@@ -63,6 +64,7 @@
         "external_pointers.h": "c",
         "extern_pointers.h": "c",
         "draw.h": "c",
-        "constants.h": "c"
+        "constants.h": "c",
+        "structures.h": "c"
     }
 }

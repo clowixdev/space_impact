@@ -2,6 +2,7 @@
 #define EXTERN_P_H
 
 #include "structures.h"
+#include "lists.h"
 
 extern GLuint textures[TEXTURES_AMT+1];
 
@@ -13,12 +14,13 @@ extern bool boss_is_dead;
 
 extern struct Player player;
 extern struct Boss boss;
-extern struct Bullet bullet;
-extern struct Bullet boss_bullet;
 extern struct Heart heart;
 extern struct Menu main_menu;
-extern struct Asteroid small_asteroid;
-extern struct Asteroid medium_asteroid;
-extern struct Asteroid big_asteroid;
+
+extern struct Bullet_list bullets;
+extern struct Bullet_list boss_bullets;
+extern struct Asteroid_list small_asteroids;
+extern struct Asteroid_list medium_asteroids;
+extern struct Asteroid_list big_asteroids;
 
 #endif

@@ -9,19 +9,15 @@
 
 #include "constants.h"
 #include "structures.h"
+#include "lists.h"
 #include "keyboard.h"
 #include "draw.h"
 #include "init.h"
 
 struct Player player;
 struct Boss boss;
-struct Bullet bullet;
-struct Bullet boss_bullet;
 struct Heart heart;
 struct Menu main_menu;
-struct Asteroid small_asteroid;
-struct Asteroid medium_asteroid;
-struct Asteroid big_asteroid;
 
 bool changed_to_second = false;
 bool changed_to_third = false;
@@ -30,6 +26,12 @@ bool player_is_dead = false;
 bool boss_is_dead = false;
 
 GLuint textures[TEXTURES_AMT+1] = { 0 };
+
+struct Bullet_list *bullets;
+struct Bullet_list *boss_bullets;
+struct Asteroid_list *small_asteroids;
+struct Asteroid_list *medium_asteroids;
+struct Asteroid_list *big_asteroids;
 
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
@@ -40,6 +42,7 @@ int main(int argc, char** argv) {
     glutCreateWindow(WINDOW_CAPTION);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
+    init_object_lists(bullets, boss_bullets, small_asteroids, medium_asteroids, big_asteroids);
     main_menu_init();
     glutDisplayFunc(draw_main_menu);
     glutKeyboardFunc(handle_menu_keyboard);

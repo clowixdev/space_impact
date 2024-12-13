@@ -56,6 +56,9 @@ void update(int aux) {
     }
 
     //update player bullet position
+    
+    //TODO if bullet on screen then update it, else remove from list
+
     if (bullet.bulletX >= 0) {
         bullet.bulletX += bullet.bulletSpeed;
         if (bullet.bulletX >= WINDOW_WIDTH) {
@@ -285,4 +288,54 @@ void update(int aux) {
     
     glutPostRedisplay();
     glutTimerFunc(25, update, 0);
+}
+
+void add_bullet() {
+    struct Bullet *curr_bullet = bullets;
+    
+    while (true) {
+        if (bullet_on_screen(curr_bullet) && curr_bullet->next == NULL) {
+            struct Bullet *player_bullet = init_bullet_list_elem();
+            curr_bullet->next = player_bullet;
+        } else if (bullet_on_screen(curr_bullet) && curr_bullet->next != NULL) {
+            curr_bullet = curr_bullet->next;
+        } else if (!bullet_on_screen(curr_bullet) && curr_bullet->next == NULL) {
+            player_bullet->bulletY = player->playerY + player->playerSize / 2 - bullet->bulletSize / 2;
+            player_bullet->bulletX = player->playerX;
+
+            break;
+        }
+    }
+}
+
+void add_boss_bullet() {
+
+}
+
+void add_small_asteroid() {
+
+}
+
+void add_medium_asteroid() {
+
+}
+
+void add_big_asteroid() { 
+
+}
+
+bool is_bullet_on_screen(struct Bullet * bullet) {
+    if (bullet->bulletX > 0 && bullet->bulletX < WINDOW_WIDTH) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool is_asteroid_on_screen(struct Asteroid * asteroid) {
+    if (asteroid->asteroidX > 0 && asteroid->asteroidX < WINDOW_WIDTH) {
+        return true;
+    } else {
+        return false;
+    }
 }

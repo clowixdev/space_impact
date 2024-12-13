@@ -345,39 +345,26 @@ void init_game() {
     boss.bossY = WINDOW_HEIGHT / 2;
     boss.bossX = WINDOW_WIDTH - boss.bossSize * 2;
 
-    boss_bullet.bulletSize = 25;
-    boss_bullet.bulletSpeed = 10;
-    boss_bullet.bulletX = -boss_bullet.bulletSize;
-    boss_bullet.bulletY = -boss_bullet.bulletSize;
-    boss.reached_top = true;
-    boss.reached_bot = false;
-
-    bullet.bulletSize = 10;
-    bullet.bulletSpeed = 20;
-    bullet.bulletX = -bullet.bulletSize;
-    bullet.bulletY = -bullet.bulletSize;
-
-    small_asteroid.asteroidSize = 30;
-    small_asteroid.spawn = true;
-    small_asteroid.asteroidSpeed = 4;
-    small_asteroid.asteroidY = -small_asteroid.asteroidSize;
-    small_asteroid.asteroidX = WINDOW_WIDTH - small_asteroid.asteroidSize;
-
     heart.heartSize = 30;
     heart.spawn = true;
     heart.heartX = WINDOW_WIDTH - heart.heartSize;
     heart.heartY = -heart.heartSize;
     heart.heartSpeed = 4;
 
-    medium_asteroid.asteroidSize = 40;
-    medium_asteroid.spawn = true;
-    medium_asteroid.asteroidSpeed = 3;
-    medium_asteroid.asteroidY = -medium_asteroid.asteroidSize;
-    medium_asteroid.asteroidX = WINDOW_WIDTH - medium_asteroid.asteroidSize;
+    boss.reached_top = true;
+    boss.reached_bot = false;
+}
 
-    big_asteroid.asteroidSize = 50;
-    big_asteroid.spawn = true;
-    big_asteroid.asteroidSpeed = 2;
-    big_asteroid.asteroidY = -big_asteroid.asteroidSize;
-    big_asteroid.asteroidX = WINDOW_WIDTH - big_asteroid.asteroidSize;
+void init_object_lists(
+    struct Bullet_list *bullets,
+    struct Bullet_list *boss_bullets,
+    struct Asteroid_list *small_asteroids,
+    struct Asteroid_list *medium_asteroids,
+    struct Asteroid_list *big_asteroids)
+{
+    bullets = init_bullet_list_elem();
+    boss_bullets = init_bullet_list_elem();
+    small_asteroids = init_asteroid_list_elem();
+    medium_asteroids = init_asteroid_list_elem();
+    big_asteroids = init_asteroid_list_elem();
 }
