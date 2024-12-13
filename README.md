@@ -17,13 +17,13 @@
 ### About
 
 This is a copy of old mobile game Space Impact with our own ideas for some
-game mechanics. All the development was conducted in C language with OpenGL, 
+game mechanics. All the development was conducted in C language with OpenGL,
 especially using freeglut. To load textures, we used STB_IMAGE library that
 we found in the Ithernet
 
 ### Compiling
 
-You can compile our game by using compile task from tasks.json. 
+You can compile our game by using compile task from tasks.json.
 All the dependencies that should be located in ../dependecies:
 
     1. STB_IMAGE
@@ -40,7 +40,7 @@ You should also add to your /system32/ directory these .dll files:
 All the needed files you can find in your lovely browser ~ (^-^ ~)
 The compiled file will wait you in ./builds/windows/ directory
 
-You can compile program in Linux using build.sh script.
+> You can compile program in Linux using build.sh script.
 
 Have fun testing our project!
 
@@ -49,5 +49,12 @@ Have fun testing our project!
     1. "Boss" on level 4 - DONE!
     2. 50% chance to drop heart on small asteroid kill - DONE!
     3. Add textures to all objects - DONE!
-    4. add sounds - DONE!
+    4. Add sounds - DONE!
+    5. Rework objects system ( 
+        - create global lists that will store objects and their data,
+        - create object with create_<obj> func and push in the global list,
+        - change objects state with foreach_obj(...) func,
+        - add ability to shoot multiple bullets
+    )
+
 ### ACCEPTED!
