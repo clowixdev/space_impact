@@ -57,14 +57,48 @@ struct Bullet_list * init_bullet_list_elem() {
     return bullet_list_elem;
 };
 
-void add_to_alist() {};
+void remove_from_alist(struct Asteroid_list *list_head, struct Asteroid *a) {
+    struct Asteroid_list *temp = list_head->next;
+    struct Asteroid_list *prev = list_head;
+    while( temp !=NULL )
+    {
+        if (temp->asteroid == a){
+            prev->next = temp->next;
+            return;
+        }
+        prev = temp;
+        temp = temp->next;
+    }
+};
 
-void add_to_blist() {};
+void remove_from_blist(struct Bullet_list *list_head, struct Bullet *b) {
+    struct Bullet_list *temp = list_head->next;
+    struct Bullet_list *prev = list_head;
+    while( temp !=NULL )
+    {
+        if (temp->bullet == b){
+            prev->next = temp->next;
+            return;
+        }
+        prev = temp;
+        temp = temp->next;
+    }
+};
 
-void remove_from_alist() {};
+void for_asteroid_list(struct Asteroid_list *list_head, void (*func)(struct Asteroid*)) {
+    struct Asteroid_list *temp = list_head->next; //??
+    while( temp !=NULL )
+    {
+        func(temp->asteroid);
+        temp = temp->next;
+    }
+};
 
-void remove_from_blist() {};
-
-void for_asteroid_list() {};
-
-void for_bullet_list() {};
+void for_bullet_list(struct Bullet_list *list_head, void (*func)(struct Bullet*)) {
+    struct Bullet_list *temp = list_head->next; //??
+    while( temp !=NULL )
+    {
+        func(temp->bullet);
+        temp = temp->next;
+    }
+};
