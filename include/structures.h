@@ -10,6 +10,7 @@ struct Player {
     int playerX;
     int playerLives;
     int playerScore;
+    bool godMode;
 };
 
 struct Boss {
@@ -29,7 +30,6 @@ struct Bullet {
 };
 
 struct Asteroid {
-    bool spawn;
     int asteroidSize;
     int asteroidY;
     int asteroidX;
@@ -46,6 +46,16 @@ struct Heart {
 
 struct Menu {
     int option;
+};
+
+struct Bullet_list {
+    struct Bullet *bullet;
+    struct Bullet_list *next;
+};
+
+struct Asteroid_list {
+    struct Asteroid *asteroid;
+    struct Asteroid_list *next;
 };
 
 #endif
