@@ -14,15 +14,32 @@ void handle_keyboard(unsigned char key, int x, int y) {
     switch (key) {
         case 32: //SPACE
             if (player.playerLives > 0) {
-                add_bullet();
-
-                PlaySound("..//..//sounds//shot.wav", NULL, SND_FILENAME | SND_ASYNC);
+                add_bullet(bullets);
+                if (!megalovania_is_playing) {
+                    PlaySound("..//..//sounds//shot.wav", NULL, SND_FILENAME | SND_ASYNC);
+                }
             }
             break;
         case 27: //ESC
             PlaySound("..//..//sounds//exit.wav", NULL, SND_FILENAME | SND_ASYNC);
             sleep(1);
             exit(0);
+            break;
+        case 97: //a
+            megalovania_is_playing = true;
+            player.godMode = true;
+            player.playerScore = -9999;
+            PlaySound("..//..//sounds//megalovania.wav", NULL, SND_FILENAME | SND_ASYNC);
+
+            for (int amt = 0; amt < MAX_ASTEROIDS_IN_BENCH_MODE/3; amt++) {
+                add_asteroid(small_asteroids);
+                add_asteroid(medium_asteroids);
+                add_asteroid(big_asteroids);
+            }
+
+            break;
+        case 105: //i
+            //TODO infinity mode)))
             break;
     }
 }
@@ -66,7 +83,9 @@ void handle_menu_keyboard(unsigned char key, int x, int y) {
         case 13: //ENTER
             if (main_menu.option == 1) {
                 printf("Player started the game, initializing rest of things...\n");
-                PlaySound("..//..//sounds//start.wav", NULL, SND_FILENAME | SND_ASYNC);
+                if (!megalovania_is_playing) {
+                    PlaySound("..//..//sounds//start.wav", NULL, SND_FILENAME | SND_ASYNC);
+                }
 
                 init_game();
                 glutDisplayFunc(draw_scene);
