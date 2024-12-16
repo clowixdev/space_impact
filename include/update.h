@@ -16,6 +16,11 @@ bool is_colliding_bp(struct Bullet *b, struct Player p);
 bool is_colliding_bbs(struct Bullet *b, struct Boss bs);
 void update_asteroid_position(struct Asteroid *asteroid);
 void update_bullet_position(struct Bullet *bullet);
+void update_boss_state(void);
+void player_state_update(void);
+void maybe_spawn_heart(struct Asteroid_list *a);
+void check_bullet_asteroid_collisions(struct Asteroid_list *asteroids);
+void check_asteroid_player_collisions(struct Asteroid_list *current_asteroid);
 void update(int aux);
 
 #endif
