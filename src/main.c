@@ -38,6 +38,10 @@ struct Asteroid_list *small_asteroids;
 struct Asteroid_list *medium_asteroids;
 struct Asteroid_list *big_asteroids;
 
+int frameCountPerSecond; 
+int frameCount;         
+double previousTime;
+
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);

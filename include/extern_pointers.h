@@ -27,4 +27,8 @@ extern struct Asteroid_list *small_asteroids;
 extern struct Asteroid_list *medium_asteroids;
 extern struct Asteroid_list *big_asteroids;
 
+extern int frameCountPerSecond; 
+extern int frameCount;         
+extern double previousTime;
+
 #endif

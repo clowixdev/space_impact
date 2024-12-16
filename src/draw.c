@@ -5,6 +5,16 @@
 #include "extern_pointers.h"
 #include "update.h"
 
+void frame_counter () {
+    frameCount++;
+    double currentTime = (double)glutGet(GLUT_ELAPSED_TIME) / 1000.0; 
+    if (currentTime - previousTime >= 1.0) { //per sec
+        frameCountPerSecond = frameCount;
+        frameCount = 0;
+        previousTime = currentTime;
+    }
+}
+
 void draw_rectangle(int x, int y, int width, int height, int texture_id) {
     glBindTexture(GL_TEXTURE_2D, textures[texture_id]);
     glEnable(GL_TEXTURE_2D);
@@ -182,7 +192,14 @@ void draw_scene() {
         char score[DRAW_TEXT_LENGTH];
         sprintf(score, "Score: %d", player.playerScore);
         draw_text(10, WINDOW_HEIGHT - 50, score);
+
+        //draw fps
+        char fps[DRAW_TEXT_LENGTH];
+        sprintf(fps, "fps: %d", frameCountPerSecond);
+        draw_text(10, 30, fps);
     }
+
+    frame_counter();
 
     glutSwapBuffers();
 }
