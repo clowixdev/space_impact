@@ -7,36 +7,28 @@
             "command": "gcc",
             "windows": {
                 "args": [
-                    "${workspaceRoot}/src/main.c",                    
-                    
+                    "${workspaceRoot}/src/main.c",
                     "-g",
                     "--std=c99",
-
-                    "${workspaceRoot}/src/draw_objects.c",
-                    "${workspaceRoot}/src/init.c",
-                    "${workspaceRoot}/src/keyboard_handler.c",
+                    "${workspaceRoot}/src/keyboard.c",
                     "${workspaceRoot}/src/update.c",
-                    "-I${workspaceRoot}/src/include",
-
+                    "${workspaceRoot}/src/draw.c",
+                    "${workspaceRoot}/src/init.c",
+                    "${workspaceRoot}/src/lists.c",
+                    "-I${workspaceRoot}/include",
                     "-I${workspaceRoot}/../dependencies/STB_IMAGE/include",
                     "-I${workspaceRoot}/../dependencies/GLFW/include",
                     "-I${workspaceRoot}/../dependencies/FREEGLUT/include",
                     "-I${workspaceRoot}/../dependencies/GLEW/include",
-
                     "-lwinmm",
-
                     "-lopengl32",
                     "-lglu32",
-
                     "-L${workspaceRoot}/../dependencies/GLEW/bin/Release/x64",
                     "-lglew32",
-
                     "-L${workspaceRoot}/../dependencies/FREEGLUT/bin/x64",
                     "-lfreeglut",
-
                     "-L${workspaceRoot}/../dependencies/GLFW/lib-mingw-w64",
                     "-lglfw3dll",
-
                     "-o",
                     "${workspaceRoot}/builds/windows/space_impact"
                 ]
