@@ -3,6 +3,7 @@
 
 #include "constants.h"
 #include "extern_pointers.h"
+#include "update.h"
 
 void draw_rectangle(int x, int y, int width, int height, int texture_id) {
     glBindTexture(GL_TEXTURE_2D, textures[texture_id]);
@@ -56,19 +57,19 @@ void draw_scene() {
         //draw background
         draw_rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 10);
 
-        char game_over[DRAW_TEXT_LENGHT];
+        char game_over[DRAW_TEXT_LENGTH];
         sprintf(game_over, "Game over!");
         draw_text((WINDOW_WIDTH / 2) - 50, WINDOW_HEIGHT / 2, game_over);
         
-        char score[DRAW_TEXT_LENGHT];
+        char score[DRAW_TEXT_LENGTH];
         sprintf(score, "Score: %d", player.playerScore);
         draw_text((WINDOW_WIDTH / 2) - 45, WINDOW_HEIGHT / 2 - 40, score);
         
-        char level[DRAW_TEXT_LENGHT];
+        char level[DRAW_TEXT_LENGTH];
         sprintf(level, "Level: %d", player.currentLevel);
         draw_text((WINDOW_WIDTH / 2) - 40, WINDOW_HEIGHT / 2 - 60, level);
         
-        char closing[DRAW_TEXT_LENGHT];
+        char closing[DRAW_TEXT_LENGTH];
         sprintf(closing, "To close game press ESC");
         draw_text((WINDOW_WIDTH / 2) - 120, WINDOW_HEIGHT / 2 - 80, closing);
 
@@ -76,19 +77,19 @@ void draw_scene() {
         //draw background
         draw_rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 10);
 
-        char game_end[DRAW_TEXT_LENGHT];
+        char game_end[DRAW_TEXT_LENGTH];
         sprintf(game_end, "You won!");
         draw_text((WINDOW_WIDTH / 2) - 50, WINDOW_HEIGHT / 2, game_end);
         
-        char score[DRAW_TEXT_LENGHT];
+        char score[DRAW_TEXT_LENGTH];
         sprintf(score, "Score: %d", player.playerScore);
         draw_text((WINDOW_WIDTH / 2) - 45, WINDOW_HEIGHT / 2 - 40, score);
         
-        char level[DRAW_TEXT_LENGHT];
+        char level[DRAW_TEXT_LENGTH];
         sprintf(level, "Level: %d", player.currentLevel);
         draw_text((WINDOW_WIDTH / 2) - 40, WINDOW_HEIGHT / 2 - 60, level);
         
-        char closing[DRAW_TEXT_LENGHT];
+        char closing[DRAW_TEXT_LENGTH];
         sprintf(closing, "To close game press ESC");
         draw_text((WINDOW_WIDTH / 2) - 120, WINDOW_HEIGHT / 2 - 80, closing);
         
@@ -97,7 +98,13 @@ void draw_scene() {
         draw_rectangle(player.playerX - player.playerSize / 2, player.playerY, player.playerSize, player.playerSize, 0);
 
         //draw player_bullet
-        draw_rectangle(bullet.bulletX, bullet.bulletY, bullet.bulletSize, bullet.bulletSize, 1);
+        struct Bullet_list *bullet_elem = bullets;
+        while (bullet_elem != NULL) {
+            if (is_bullet_on_screen(bullet_elem->bullet)) {
+                draw_rectangle(bullet_elem->bullet->bulletX, bullet_elem->bullet->bulletY, bullet_elem->bullet->bulletSize, bullet_elem->bullet->bulletSize, 1);
+            }
+            bullet_elem = bullet_elem->next;
+        }
 
         //draw boss
         draw_rectangle(boss.bossX, boss.bossY, boss.bossSize, boss.bossSize, 6);
@@ -105,15 +112,21 @@ void draw_scene() {
         //...
 
         //draw boss_bullet
-        draw_rectangle(boss_bullet.bulletX, boss_bullet.bulletY, boss_bullet.bulletSize, boss_bullet.bulletSize, 2);
+        struct Bullet_list *boss_bullet_elem = boss_bullets;
+        while (boss_bullet_elem != NULL) {
+            if (is_bullet_on_screen(boss_bullet_elem->bullet)) {
+                draw_rectangle(boss_bullet_elem->bullet->bulletX, boss_bullet_elem->bullet->bulletY, boss_bullet_elem->bullet->bulletSize, boss_bullet_elem->bullet->bulletSize, 2);
+            }
+            boss_bullet_elem = boss_bullet_elem->next;
+        }
 
         //draw level
-        char level[DRAW_TEXT_LENGHT];
+        char level[DRAW_TEXT_LENGTH];
         sprintf(level, "Level: Boss");
         draw_text(10, WINDOW_HEIGHT - 30, level);
 
         //draw boss_lives
-        char boss_lives[DRAW_TEXT_LENGHT];
+        char boss_lives[DRAW_TEXT_LENGTH];
         sprintf(boss_lives, "Boss lives: %d", boss.bossLives);
         draw_text(10, WINDOW_HEIGHT - 50, boss_lives);
 
@@ -125,24 +138,48 @@ void draw_scene() {
         draw_rectangle(heart.heartX, heart.heartY, heart.heartSize, heart.heartSize, 13);
         
         //draw bullet
-        draw_rectangle(bullet.bulletX, bullet.bulletY, bullet.bulletSize, bullet.bulletSize, 1);
+        struct Bullet_list *bullet_elem = bullets;
+        while (bullet_elem != NULL) {
+            if (is_bullet_on_screen(bullet_elem->bullet)) {
+                draw_rectangle(bullet_elem->bullet->bulletX, bullet_elem->bullet->bulletY, bullet_elem->bullet->bulletSize, bullet_elem->bullet->bulletSize, 1);
+            }
+            bullet_elem = bullet_elem->next;
+        }
         
         //draw small_asteroid
-        draw_rectangle(small_asteroid.asteroidX, small_asteroid.asteroidY, small_asteroid.asteroidSize, small_asteroid.asteroidSize, 3);
+        struct Asteroid_list *sa_elem = small_asteroids;
+        while (sa_elem != NULL) {
+            if (is_asteroid_on_screen(sa_elem->asteroid)) {
+                draw_rectangle(sa_elem->asteroid->asteroidX, sa_elem->asteroid->asteroidY, sa_elem->asteroid->asteroidSize, sa_elem->asteroid->asteroidSize, 3);
+            }
+            sa_elem = sa_elem->next;
+        }
 
         //draw medium_asteroid
-        draw_rectangle(medium_asteroid.asteroidX, medium_asteroid.asteroidY, medium_asteroid.asteroidSize, medium_asteroid.asteroidSize, 4);
+        struct Asteroid_list *ma_elem = medium_asteroids;
+        while (ma_elem != NULL) {
+            if (is_asteroid_on_screen(ma_elem->asteroid)) {
+                draw_rectangle(ma_elem->asteroid->asteroidX, ma_elem->asteroid->asteroidY, ma_elem->asteroid->asteroidSize, ma_elem->asteroid->asteroidSize, 4);
+            }
+            ma_elem = ma_elem->next;
+        }
         
         //draw big_asteroid
-        draw_rectangle(big_asteroid.asteroidX, big_asteroid.asteroidY, big_asteroid.asteroidSize, big_asteroid.asteroidSize, 5);
+        struct Asteroid_list *ba_elem = big_asteroids;
+        while (ba_elem != NULL) {
+            if (is_asteroid_on_screen(ba_elem->asteroid)) {
+                draw_rectangle(ba_elem->asteroid->asteroidX, ba_elem->asteroid->asteroidY, ba_elem->asteroid->asteroidSize, ba_elem->asteroid->asteroidSize, 5);
+            }
+            ba_elem = ba_elem->next;
+        }
         
         //draw level
-        char level[DRAW_TEXT_LENGHT];
+        char level[DRAW_TEXT_LENGTH];
         sprintf(level, "Level: %d", player.currentLevel);
         draw_text(10, WINDOW_HEIGHT - 30, level);
 
         //draw score
-        char score[DRAW_TEXT_LENGHT];
+        char score[DRAW_TEXT_LENGTH];
         sprintf(score, "Score: %d", player.playerScore);
         draw_text(10, WINDOW_HEIGHT - 50, score);
     }

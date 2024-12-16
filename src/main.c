@@ -24,6 +24,11 @@ bool changed_to_third = false;
 bool changed_to_fourth = false;
 bool player_is_dead = false;
 bool boss_is_dead = false;
+bool megalovania_is_playing = false;
+
+int boss_delay = 0;
+
+bool spawn_asteroids = true;
 
 GLuint textures[TEXTURES_AMT+1] = { 0 };
 
@@ -42,13 +47,22 @@ int main(int argc, char** argv) {
     glutCreateWindow(WINDOW_CAPTION);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
-    init_object_lists(bullets, boss_bullets, small_asteroids, medium_asteroids, big_asteroids);
+
+    bullets = init_bullet_list_elem();
+    boss_bullets = init_bullet_list_elem();
+    small_asteroids = init_asteroid_list_elem('s');
+    medium_asteroids = init_asteroid_list_elem('m');
+    big_asteroids = init_asteroid_list_elem('b');
+
     main_menu_init();
     glutDisplayFunc(draw_main_menu);
     glutKeyboardFunc(handle_menu_keyboard);
     glutSpecialFunc(handle_menu_special_keyboard);
 
-    PlaySound("..//..//sounds//menu.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+    if (!megalovania_is_playing) {
+        PlaySound("..//..//sounds//menu.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+    }
+    
     glutMainLoop();
     
     return 0;

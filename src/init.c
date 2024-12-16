@@ -5,6 +5,7 @@
 #include <stb_image.h>
 
 #include "constants.h"
+#include "lists.h"
 #include "extern_pointers.h"
 
 void main_menu_init() {
@@ -339,8 +340,9 @@ void init_game() {
     player.playerX = player.playerSize;
     player.playerScore = 0;
     player.playerLives = 3;
+    player.godMode = false;
 
-    boss.bossLives = 3;
+    boss.bossLives = 10;
     boss.bossSize = 70;
     boss.bossY = WINDOW_HEIGHT / 2;
     boss.bossX = WINDOW_WIDTH - boss.bossSize * 2;
@@ -353,18 +355,4 @@ void init_game() {
 
     boss.reached_top = true;
     boss.reached_bot = false;
-}
-
-void init_object_lists(
-    struct Bullet_list *bullets,
-    struct Bullet_list *boss_bullets,
-    struct Asteroid_list *small_asteroids,
-    struct Asteroid_list *medium_asteroids,
-    struct Asteroid_list *big_asteroids)
-{
-    bullets = init_bullet_list_elem();
-    boss_bullets = init_bullet_list_elem();
-    small_asteroids = init_asteroid_list_elem();
-    medium_asteroids = init_asteroid_list_elem();
-    big_asteroids = init_asteroid_list_elem();
 }
