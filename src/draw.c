@@ -5,6 +5,9 @@
 #include "extern_pointers.h"
 #include "update.h"
 
+ static int last_texture_id = -1;
+
+
 void frame_counter () {
     frameCount++;
     double currentTime = (double)glutGet(GLUT_ELAPSED_TIME) / 1000.0; 
@@ -16,8 +19,11 @@ void frame_counter () {
 }
 
 void draw_rectangle(int x, int y, int width, int height, int texture_id) {
-    glBindTexture(GL_TEXTURE_2D, textures[texture_id]);
-    glEnable(GL_TEXTURE_2D);
+    if (texture_id != last_texture_id) {
+        glBindTexture(GL_TEXTURE_2D, textures[texture_id]);
+        last_texture_id = texture_id;
+    }
+
 
     glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 1.0f); glVertex2f(x, y);
@@ -26,7 +32,6 @@ void draw_rectangle(int x, int y, int width, int height, int texture_id) {
     glTexCoord2f(0.0f, 0.0f); glVertex2f(x, y + height);
     glEnd();
 
-    glDisable(GL_TEXTURE_2D);
 }
 
 void draw_text(int x, int y, char* string) {
@@ -40,6 +45,8 @@ void draw_text(int x, int y, char* string) {
 void draw_main_menu() {
     glClear(GL_COLOR_BUFFER_BIT);
 
+    glEnable(GL_TEXTURE_2D);
+
     //draw main menu
     glColor3f(1.0, 1.0, 1.0);
     if (main_menu.option == 1) {
@@ -47,13 +54,14 @@ void draw_main_menu() {
     } else if (main_menu.option == 0) {
         draw_rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 12);
     }
-
+    glDisable(GL_TEXTURE_2D);
     glutSwapBuffers();
 }
 
 void draw_scene() {
     glClear(GL_COLOR_BUFFER_BIT);
 
+    glEnable(GL_TEXTURE_2D);
     //draw background
     if (player.playerLives == 3) {
         draw_rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 9);
@@ -62,10 +70,14 @@ void draw_scene() {
     } else if (player.playerLives == 1) {
         draw_rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 7);
     }
+    glDisable(GL_TEXTURE_2D);
 
     if (player.playerLives == 0) {
+        glEnable(GL_TEXTURE_2D);
         //draw background
         draw_rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 10);
+
+        glDisable(GL_TEXTURE_2D);
 
         char game_over[DRAW_TEXT_LENGTH];
         sprintf(game_over, "Game over!");
@@ -84,9 +96,11 @@ void draw_scene() {
         draw_text((WINDOW_WIDTH / 2) - 120, WINDOW_HEIGHT / 2 - 80, closing);
 
     } else if (boss.bossLives == 0) {
+        glEnable(GL_TEXTURE_2D);
         //draw background
         draw_rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 10);
 
+        glDisable(GL_TEXTURE_2D);
         char game_end[DRAW_TEXT_LENGTH];
         sprintf(game_end, "You won!");
         draw_text((WINDOW_WIDTH / 2) - 50, WINDOW_HEIGHT / 2, game_end);
@@ -104,6 +118,8 @@ void draw_scene() {
         draw_text((WINDOW_WIDTH / 2) - 120, WINDOW_HEIGHT / 2 - 80, closing);
         
     } else if (player.currentLevel == 4) {
+        glEnable(GL_TEXTURE_2D);
+
         //draw player
         draw_rectangle(player.playerX - player.playerSize / 2, player.playerY, player.playerSize, player.playerSize, 0);
 
@@ -129,6 +145,7 @@ void draw_scene() {
             }
             boss_bullet_elem = boss_bullet_elem->next;
         }
+        glDisable(GL_TEXTURE_2D);
 
         //draw level
         char level[DRAW_TEXT_LENGTH];
@@ -141,6 +158,8 @@ void draw_scene() {
         draw_text(10, WINDOW_HEIGHT - 50, boss_lives);
 
     } else {
+        glEnable(GL_TEXTURE_2D);
+
         //draw player
         draw_rectangle(player.playerX - player.playerSize / 2, player.playerY, player.playerSize, player.playerSize, 0);
 
@@ -183,11 +202,12 @@ void draw_scene() {
             ba_elem = ba_elem->next;
         }
         
+        
         //draw level
         char level[DRAW_TEXT_LENGTH];
         sprintf(level, "Level: %d", player.currentLevel);
         draw_text(10, WINDOW_HEIGHT - 30, level);
-
+        glDisable(GL_TEXTURE_2D);
         //draw score
         char score[DRAW_TEXT_LENGTH];
         sprintf(score, "Score: %d", player.playerScore);
@@ -197,8 +217,10 @@ void draw_scene() {
         char fps[DRAW_TEXT_LENGTH];
         sprintf(fps, "fps: %d", frameCountPerSecond);
         draw_text(10, 30, fps);
+        
     }
 
+    
     frame_counter();
 
     glutSwapBuffers();
