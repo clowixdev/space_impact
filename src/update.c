@@ -7,6 +7,7 @@
 #include "constants.h"
 #include "lists.h"
 #include "extern_pointers.h"
+#include "rand.h"
 
 bool is_bullet_on_screen(struct Bullet *b) {
     if (b->bulletX >= 0 && b->bulletX <= WINDOW_WIDTH) {
@@ -77,7 +78,7 @@ void add_asteroid(struct Asteroid_list *al_head) {
             struct Asteroid_list *al_elem = init_asteroid_list_elem(asteroid_type);
             temp->next = al_elem;
 
-            temp->next->asteroid->asteroidY = rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - temp->asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
+            temp->next->asteroid->asteroidY = get_random_number() % ((WINDOW_HEIGHT - BORDERS_SIZE - temp->asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
             temp->next->asteroid->asteroidX = WINDOW_WIDTH - temp->asteroid->asteroidSize;
 
             break;
@@ -186,7 +187,7 @@ void update_asteroid_position(struct Asteroid *asteroid) {
     if (is_asteroid_on_screen(asteroid)) {
         asteroid->asteroidX -= asteroid->asteroidSpeed + (3 * (player.currentLevel - 1));
     } else if (!is_asteroid_on_screen(asteroid) && player.playerLives > 0) {
-        asteroid->asteroidY = rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
+        asteroid->asteroidY = get_random_number() % ((WINDOW_HEIGHT - BORDERS_SIZE - asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
         asteroid->asteroidX = WINDOW_WIDTH - asteroid->asteroidSize;
     }
 }
@@ -321,7 +322,7 @@ void update_boss_state(){
 }
 
 void maybe_spawn_heart(struct Asteroid_list *a){
-    int rand_int = rand() % 100;
+    int rand_int = get_random_number() % 100;
     if (rand_int > 70 && player.playerLives < 3 && heart.heartX < 0) {
         if (!megalovania_is_playing) {
             PlaySound("..//..//sounds//heart_spawn.wav", NULL, SND_FILENAME | SND_ASYNC);
@@ -352,7 +353,7 @@ void check_bullet_asteroid_collisions(struct Asteroid_list *asteroids) {
                 
                 maybe_spawn_heart(current_asteroid);
 
-                current_asteroid->asteroid->asteroidY = rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - current_asteroid->asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
+                current_asteroid->asteroid->asteroidY = get_random_number() % ((WINDOW_HEIGHT - BORDERS_SIZE - current_asteroid->asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
                 current_asteroid->asteroid->asteroidX = WINDOW_WIDTH - current_asteroid->asteroid->asteroidSize;
              
 
@@ -376,7 +377,7 @@ void check_asteroid_player_collisions(struct Asteroid_list *current_asteroid)
                     PlaySound("..//..//sounds//hit_player.wav", NULL, SND_FILENAME | SND_ASYNC);
                 }
 
-                current_asteroid->asteroid->asteroidY = rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - current_asteroid->asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
+                current_asteroid->asteroid->asteroidY = get_random_number() % ((WINDOW_HEIGHT - BORDERS_SIZE - current_asteroid->asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
                 current_asteroid->asteroid->asteroidX = WINDOW_WIDTH - current_asteroid->asteroid->asteroidSize;
 
                 break;

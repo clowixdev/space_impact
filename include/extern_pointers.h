@@ -33,4 +33,7 @@ extern int frameCountPerSecond;
 extern int frameCount;         
 extern double previousTime;
 
+extern int *random_pool;
+extern int random_index;
+
 #endif

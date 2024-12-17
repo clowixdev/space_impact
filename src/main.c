@@ -44,6 +44,9 @@ int frameCountPerSecond;
 int frameCount;         
 double previousTime;
 
+int *random_pool;
+int random_index;
+
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);

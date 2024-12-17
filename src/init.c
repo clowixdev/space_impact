@@ -7,6 +7,7 @@
 #include "constants.h"
 #include "lists.h"
 #include "extern_pointers.h"
+#include "rand.h"
 
 void main_menu_init() {
     glClearColor(1.0, 1.0, 1.0, 1.0);
@@ -355,4 +356,6 @@ void init_game() {
 
     boss.reached_top = true;
     boss.reached_bot = false;
+
+    init_random_pool();
 }

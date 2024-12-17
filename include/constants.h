@@ -12,7 +12,7 @@
 #define FOR_THIRD_LEVEL 15
 #define FOR_BOSS_LEVEL 35
 #define BOSS_DELAY_VALUE 25
-#define MAX_ASTEROIDS_IN_BENCH_MODE 50000
+#define MAX_ASTEROIDS_IN_BENCH_MODE 100000
 
 #define SA_SPEED 4
 #define SA_SIZE 30
@@ -38,5 +38,7 @@
 #define MENUS_FILENAME "../../themes/main_menu_start.bmp"
 #define MENUE_FILENAME "../../themes/main_menu_exit.bmp"
 #define HEART_FILENAME "../../themes/heart.bmp"
+
+#define RAND_POOL_SIZE 200
 
 #endif
