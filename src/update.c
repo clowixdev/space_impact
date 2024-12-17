@@ -387,33 +387,35 @@ void check_asteroid_player_collisions(struct Asteroid_list *current_asteroid)
 
 void update(int aux) {
 
-    update_player_state();
-
+    if (!player.godMode && update_count %16==0 ){
+        update_player_state();
+        update_boss_state();
+    }
     //update player bullet position
     for_bullet_list(bullets, update_bullet_position);
 
+    if (!player.godMode)
+    {
+        //update heart position
+        if (heart.heartX >= 0) {
+            heart.heartX -= heart.heartSpeed;
+            if (heart.heartX <= 0) {
+                heart.heartY = -heart.heartSize;
+                heart.heartX = -heart.heartSize;
+            }
+        }
 
+        //check heart-player collision
+        if (update_count %4==0 && is_colliding_hp(heart, player)) {
+            player.playerLives += 1;
+            if (!megalovania_is_playing) {
+                PlaySound("..//..//sounds//heal.wav", NULL, SND_FILENAME | SND_ASYNC);
+            }
 
-    //update heart position
-    if (heart.heartX >= 0) {
-        heart.heartX -= heart.heartSpeed;
-        if (heart.heartX <= 0) {
             heart.heartY = -heart.heartSize;
             heart.heartX = -heart.heartSize;
         }
     }
-
-    //check heart-player collision
-    if (is_colliding_hp(heart, player)) {
-        player.playerLives += 1;
-        if (!megalovania_is_playing) {
-            PlaySound("..//..//sounds//heal.wav", NULL, SND_FILENAME | SND_ASYNC);
-        }
-
-        heart.heartY = -heart.heartSize;
-        heart.heartX = -heart.heartSize;
-    }
-
 
     //collisions
     if (spawn_asteroids == true && player.currentLevel != 4) {
@@ -421,18 +423,18 @@ void update(int aux) {
         for_asteroid_list(medium_asteroids, update_asteroid_position);
         for_asteroid_list(big_asteroids, update_asteroid_position);
 
-        check_bullet_asteroid_collisions(small_asteroids);
-        check_bullet_asteroid_collisions(medium_asteroids);
-        check_bullet_asteroid_collisions(big_asteroids);
+        if (update_count%2==0){
+            check_bullet_asteroid_collisions(small_asteroids);
+            check_bullet_asteroid_collisions(medium_asteroids);
+            check_bullet_asteroid_collisions(big_asteroids);
 
-        check_asteroid_player_collisions(small_asteroids);
-        check_asteroid_player_collisions(medium_asteroids);
-        check_asteroid_player_collisions(big_asteroids);
+            check_asteroid_player_collisions(small_asteroids);
+            check_asteroid_player_collisions(medium_asteroids);
+            check_asteroid_player_collisions(big_asteroids);
+        }
     }
   
-     //! update boss
-    update_boss_state();
-
+    update_count++;
     glutPostRedisplay();
     glutTimerFunc(25, update, 0);
 }

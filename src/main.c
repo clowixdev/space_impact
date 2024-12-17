@@ -38,6 +38,8 @@ struct Asteroid_list *small_asteroids;
 struct Asteroid_list *medium_asteroids;
 struct Asteroid_list *big_asteroids;
 
+int update_count;
+
 int frameCountPerSecond; 
 int frameCount;         
 double previousTime;
