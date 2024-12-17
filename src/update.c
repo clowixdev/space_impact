@@ -390,7 +390,6 @@ void update(int aux) {
 
     if (!player.godMode && update_count %16==0 ){
         update_player_state();
-        update_boss_state();
     }
 
      if (!player.godMode && player.currentLevel == 4){
