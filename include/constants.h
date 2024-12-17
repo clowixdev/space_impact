@@ -11,7 +11,7 @@
 #define FOR_SECOND_LEVEL 5
 #define FOR_THIRD_LEVEL 15
 #define FOR_BOSS_LEVEL 35
-#define BOSS_DELAY_VALUE 25
+#define BOSS_DELAY_VALUE 35
 #define MAX_ASTEROIDS_IN_BENCH_MODE 100000
 
 #define SA_SPEED 4
@@ -22,7 +22,7 @@
 #define BA_SIZE 50
 
 #define B_SIZE 10
-#define B_SPEED 20
+#define B_SPEED 10
 
 #define PT_FILENAME "../../themes/player.bmp"
 #define BT_FILENAME "../../themes/bullet.bmp"

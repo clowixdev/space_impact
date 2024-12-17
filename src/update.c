@@ -351,11 +351,12 @@ void check_bullet_asteroid_collisions(struct Asteroid_list *asteroids) {
                 
                 remove_from_blist(bullets, current_bullet->bullet);
                 
-                maybe_spawn_heart(current_asteroid);
+                if (asteroids == small_asteroids) {
+                    maybe_spawn_heart(current_asteroid);
+                }
 
                 current_asteroid->asteroid->asteroidY = get_random_number() % ((WINDOW_HEIGHT - BORDERS_SIZE - current_asteroid->asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
                 current_asteroid->asteroid->asteroidX = WINDOW_WIDTH - current_asteroid->asteroid->asteroidSize;
-             
 
                 break;
             }
@@ -388,7 +389,7 @@ void check_asteroid_player_collisions(struct Asteroid_list *current_asteroid)
 
 void update(int aux) {
 
-    if (!player.godMode && update_count %16==0 ){
+    if (!player.godMode && update_count % 16 == 0 ){
         update_player_state();
     }
 
@@ -410,7 +411,7 @@ void update(int aux) {
         }
 
         //check heart-player collision
-        if (update_count %4==0 && is_colliding_hp(heart, player)) {
+        if (update_count % 4 == 0 && is_colliding_hp(heart, player)) {
             player.playerLives += 1;
             if (!megalovania_is_playing) {
                 PlaySound("..//..//sounds//heal.wav", NULL, SND_FILENAME | SND_ASYNC);
@@ -427,7 +428,7 @@ void update(int aux) {
         for_asteroid_list(medium_asteroids, update_asteroid_position);
         for_asteroid_list(big_asteroids, update_asteroid_position);
 
-        if (update_count%2==0){
+        if (update_count % 2 == 0) {
             check_bullet_asteroid_collisions(small_asteroids);
             check_bullet_asteroid_collisions(medium_asteroids);
             check_bullet_asteroid_collisions(big_asteroids);
