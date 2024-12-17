@@ -392,6 +392,10 @@ void update(int aux) {
         update_player_state();
         update_boss_state();
     }
+
+     if (!player.godMode && player.currentLevel == 4){
+        update_boss_state();
+    }
     //update player bullet position
     for_bullet_list(bullets, update_bullet_position);
 

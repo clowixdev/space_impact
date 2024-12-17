@@ -202,12 +202,13 @@ void draw_scene() {
             ba_elem = ba_elem->next;
         }
         
+        glDisable(GL_TEXTURE_2D);
         
         //draw level
         char level[DRAW_TEXT_LENGTH];
         sprintf(level, "Level: %d", player.currentLevel);
         draw_text(10, WINDOW_HEIGHT - 30, level);
-        glDisable(GL_TEXTURE_2D);
+        
         //draw score
         char score[DRAW_TEXT_LENGTH];
         sprintf(score, "Score: %d", player.playerScore);
