@@ -6,6 +6,7 @@ x86_64-w64-mingw32-gcc "${workspaceRoot}src/main.c" "-g" "--std=c99" \
 "${workspaceRoot}src/draw.c" \
 "${workspaceRoot}src/init.c" \
 "${workspaceRoot}src/lists.c" \
+"${workspaceRoot}src/rand.c" \
 "-I${workspaceRoot}include" \
 "-I${workspaceRoot}../dependencies/STB_IMAGE/include" \
 "-I${workspaceRoot}../dependencies/GLFW/include" \

@@ -65,6 +65,7 @@
         "extern_pointers.h": "c",
         "draw.h": "c",
         "constants.h": "c",
-        "structures.h": "c"
+        "structures.h": "c",
+        "rand.h": "c"
     }
 }

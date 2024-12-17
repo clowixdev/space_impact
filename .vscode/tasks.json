@@ -15,6 +15,7 @@
                     "${workspaceRoot}/src/draw.c",
                     "${workspaceRoot}/src/init.c",
                     "${workspaceRoot}/src/lists.c",
+                    "${workspaceRoot}/src/rand.c.c",
                     "-I${workspaceRoot}/include",
                     "-I${workspaceRoot}/../dependencies/STB_IMAGE/include",
                     "-I${workspaceRoot}/../dependencies/GLFW/include",
