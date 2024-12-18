@@ -7,6 +7,7 @@
 #include "extern_pointers.h"
 
 void init_random_pool() {
+    srand(time(NULL));
     random_pool = (int*) malloc(RAND_POOL_SIZE * sizeof(int));
     for (int i = 0; i < RAND_POOL_SIZE; i++) {
         random_pool[i] = rand();
