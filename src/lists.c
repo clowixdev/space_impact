@@ -15,18 +15,21 @@ struct Asteroid_list* init_asteroid_list_elem(char type) {
         asteroid->asteroidSpeed = SA_SPEED;
         asteroid->asteroidY = -asteroid->asteroidSize;
         asteroid->asteroidX = WINDOW_WIDTH - asteroid->asteroidSize;
+        asteroid->line = -1;
         break;
     case 'm':
         asteroid->asteroidSize = MA_SIZE;
         asteroid->asteroidSpeed = MA_SPEED;
         asteroid->asteroidY = -asteroid->asteroidSize;
         asteroid->asteroidX = WINDOW_WIDTH - asteroid->asteroidSize;
+        asteroid->line = -1;
         break;
     case 'b':
         asteroid->asteroidSize = BA_SIZE;
         asteroid->asteroidSpeed = BA_SPEED;
         asteroid->asteroidY = -asteroid->asteroidSize;
         asteroid->asteroidX = WINDOW_WIDTH - asteroid->asteroidSize;
+         asteroid->line = -1;
         break;
     default:
         break;
@@ -53,33 +56,46 @@ struct Bullet_list * init_bullet_list_elem() {
     return bullet_list_elem;
 };
 
-void remove_from_alist(struct Asteroid_list *list_head, struct Asteroid *a) {
+
+void add_to_alist(struct Asteroid_list *list_head, struct Asteroid_list *a){
+    a->next = list_head->next;
+    list_head->next = a;
+}
+
+void add_to_blist(struct Bullet_list *list_head, struct Bullet_list *b){
+    b->next = list_head->next;
+    list_head->next = b;
+}
+
+struct Asteroid_list * remove_from_alist(struct Asteroid_list *list_head, struct Asteroid *a) {
     if (list_head->asteroid == a) {
         list_head->asteroid->asteroidX = -a->asteroidSize;
         list_head->asteroid->asteroidY = -a->asteroidSize;
 
-        return;
+        return list_head;
     }
 
     struct Asteroid_list *temp = list_head->next;
     struct Asteroid_list *prev = list_head;
-    while( temp !=NULL )
+    while( temp != NULL )
     {
         if (temp->asteroid == a){
             prev->next = temp->next;
-            return;
+
+            return temp;
         }
         prev = temp;
         temp = temp->next;
     }
-};
+    return NULL;
+}
 
-void remove_from_blist(struct Bullet_list *list_head, struct Bullet *b) {
+struct Bullet_list * remove_from_blist(struct Bullet_list *list_head, struct Bullet *b) {
     if (list_head->bullet == b) {
         list_head->bullet->bulletX = -b->bulletSize;
         list_head->bullet->bulletY = -b->bulletSize;
 
-        return;
+        return list_head;
     }
 
     struct Bullet_list *temp = list_head->next;
@@ -88,18 +104,18 @@ void remove_from_blist(struct Bullet_list *list_head, struct Bullet *b) {
     {
         if (temp->bullet == b){
             prev->next = temp->next;
-            return;
+            return temp;
         }
         prev = temp;
         temp = temp->next;
     }
 };
 
-void for_asteroid_list(struct Asteroid_list *list_head, void (*func)(struct Asteroid*)) {
-    struct Asteroid_list *temp = list_head;
+void for_asteroid_list(struct Asteroid_list **array, struct Asteroid_list *list_head, void (*func)(struct Asteroid_list **list_head, struct Asteroid *asteroid)) {
+    struct Asteroid_list *temp = list_head->next;
     while( temp != NULL )
     {
-        func(temp->asteroid);
+        func(array, temp->asteroid);
         temp = temp->next;
     }
 };
