@@ -14,7 +14,7 @@ void handle_keyboard(unsigned char key, int x, int y) {
     switch (key) {
         case 32: //SPACE
             if (player.playerLives > 0) {
-                add_bullet(bullets);
+                add_bullet(bullet_array);
                 if (!megalovania_is_playing) {
                     PlaySound("..//..//sounds//shot.wav", NULL, SND_FILENAME | SND_ASYNC);
                 }
@@ -32,9 +32,9 @@ void handle_keyboard(unsigned char key, int x, int y) {
             PlaySound("..//..//sounds//megalovania.wav", NULL, SND_FILENAME | SND_ASYNC);
 
             for (int amt = 0; amt < MAX_ASTEROIDS_IN_BENCH_MODE/3; amt++) {
-                add_asteroid(small_asteroids);
-                add_asteroid(medium_asteroids);
-                add_asteroid(big_asteroids);
+                add_asteroid(small_asteroids_array);
+                add_asteroid(medium_asteroids_array);
+                add_asteroid(big_asteroids_array);
             }
 
             break;
@@ -88,6 +88,7 @@ void handle_menu_keyboard(unsigned char key, int x, int y) {
                 }
 
                 init_game();
+
                 glutDisplayFunc(draw_scene);
                 glutKeyboardFunc(handle_keyboard);
                 glutSpecialFunc(handle_movement_keys);

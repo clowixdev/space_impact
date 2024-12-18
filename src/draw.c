@@ -124,12 +124,16 @@ void draw_scene() {
         draw_rectangle(player.playerX - player.playerSize / 2, player.playerY, player.playerSize, player.playerSize, 0);
 
         //draw player_bullet
-        struct Bullet_list *bullet_elem = bullets;
-        while (bullet_elem != NULL) {
-            if (is_bullet_on_screen(bullet_elem->bullet)) {
-                draw_rectangle(bullet_elem->bullet->bulletX, bullet_elem->bullet->bulletY, bullet_elem->bullet->bulletSize, bullet_elem->bullet->bulletSize, 1);
+        for (int i=0; i < LINE_COUNT; i++){
+            struct Bullet_list *bullet_elem = bullet_array[i];
+            while (bullet_elem != NULL) {
+                if (is_bullet_on_screen(bullet_elem->bullet)) {
+                    if (!bullet_elem->bullet->between || (bullet_elem->bullet->between && i % 2 == 0)){
+                    draw_rectangle(bullet_elem->bullet->bulletX, bullet_elem->bullet->bulletY, bullet_elem->bullet->bulletSize, bullet_elem->bullet->bulletSize, 1);
+                    }
+                }
+                bullet_elem = bullet_elem->next;
             }
-            bullet_elem = bullet_elem->next;
         }
 
         //draw boss
@@ -138,13 +142,17 @@ void draw_scene() {
         //...
 
         //draw boss_bullet
-        struct Bullet_list *boss_bullet_elem = boss_bullets;
-        while (boss_bullet_elem != NULL) {
-            if (is_bullet_on_screen(boss_bullet_elem->bullet)) {
-                draw_rectangle(boss_bullet_elem->bullet->bulletX, boss_bullet_elem->bullet->bulletY, boss_bullet_elem->bullet->bulletSize, boss_bullet_elem->bullet->bulletSize, 2);
+        /*//!!!!
+        for (int i=0; i < LINE_COUNT; i++){
+            struct Bullet_list *boss_bullet_elem = boss_bullet_array[i];
+            while (boss_bullet_elem != NULL) {
+                if (is_bullet_on_screen(boss_bullet_elem->bullet)) {
+                    draw_rectangle(boss_bullet_elem->bullet->bulletX, boss_bullet_elem->bullet->bulletY, boss_bullet_elem->bullet->bulletSize, boss_bullet_elem->bullet->bulletSize, 2);
+                }
+                boss_bullet_elem = boss_bullet_elem->next;
             }
-            boss_bullet_elem = boss_bullet_elem->next;
-        }
+        }*/
+        
         glDisable(GL_TEXTURE_2D);
 
         //draw level
@@ -167,41 +175,55 @@ void draw_scene() {
         draw_rectangle(heart.heartX, heart.heartY, heart.heartSize, heart.heartSize, 13);
         
         //draw bullet
-        struct Bullet_list *bullet_elem = bullets;
-        while (bullet_elem != NULL) {
-            if (is_bullet_on_screen(bullet_elem->bullet)) {
-                draw_rectangle(bullet_elem->bullet->bulletX, bullet_elem->bullet->bulletY, bullet_elem->bullet->bulletSize, bullet_elem->bullet->bulletSize, 1);
+       for (int i=0; i < LINE_COUNT; i++){
+            struct Bullet_list *bullet_elem = bullet_array[i];
+            while (bullet_elem != NULL) {
+                if (is_bullet_on_screen(bullet_elem->bullet)) {
+                    if (!bullet_elem->bullet->between){
+                    draw_rectangle(bullet_elem->bullet->bulletX, bullet_elem->bullet->bulletY, bullet_elem->bullet->bulletSize, bullet_elem->bullet->bulletSize, 1);
+                    }
+                    else if (i % 2 == 0){
+                        draw_rectangle(bullet_elem->bullet->bulletX, bullet_elem->bullet->bulletY, bullet_elem->bullet->bulletSize, bullet_elem->bullet->bulletSize, 1);
+                    }
+                }
+                
+                bullet_elem = bullet_elem->next;
             }
-            bullet_elem = bullet_elem->next;
         }
         
         //draw small_asteroid
-        struct Asteroid_list *sa_elem = small_asteroids;
-        while (sa_elem != NULL) {
-            if (is_asteroid_on_screen(sa_elem->asteroid)) {
-                draw_rectangle(sa_elem->asteroid->asteroidX, sa_elem->asteroid->asteroidY, sa_elem->asteroid->asteroidSize, sa_elem->asteroid->asteroidSize, 3);
+        for (int i=0; i < LINE_COUNT; i++){
+            struct Asteroid_list *sa_elem = small_asteroids_array[i]->next;
+            while (sa_elem != NULL) {
+                if (is_asteroid_on_screen(sa_elem->asteroid)) {
+                    draw_rectangle(sa_elem->asteroid->asteroidX, sa_elem->asteroid->asteroidY, sa_elem->asteroid->asteroidSize, sa_elem->asteroid->asteroidSize, 3);
+                }
+                sa_elem = sa_elem->next;
             }
-            sa_elem = sa_elem->next;
         }
 
         //draw medium_asteroid
-        struct Asteroid_list *ma_elem = medium_asteroids;
-        while (ma_elem != NULL) {
-            if (is_asteroid_on_screen(ma_elem->asteroid)) {
-                draw_rectangle(ma_elem->asteroid->asteroidX, ma_elem->asteroid->asteroidY, ma_elem->asteroid->asteroidSize, ma_elem->asteroid->asteroidSize, 4);
+        for (int i=0; i < LINE_COUNT; i++){
+            struct Asteroid_list *ma_elem = medium_asteroids_array[i]->next;
+            while (ma_elem != NULL) {
+                if (is_asteroid_on_screen(ma_elem->asteroid)) {
+                    draw_rectangle(ma_elem->asteroid->asteroidX, ma_elem->asteroid->asteroidY, ma_elem->asteroid->asteroidSize, ma_elem->asteroid->asteroidSize, 4);
+                }
+                ma_elem = ma_elem->next;
             }
-            ma_elem = ma_elem->next;
         }
-        
+
         //draw big_asteroid
-        struct Asteroid_list *ba_elem = big_asteroids;
-        while (ba_elem != NULL) {
-            if (is_asteroid_on_screen(ba_elem->asteroid)) {
-                draw_rectangle(ba_elem->asteroid->asteroidX, ba_elem->asteroid->asteroidY, ba_elem->asteroid->asteroidSize, ba_elem->asteroid->asteroidSize, 5);
-            }
-            ba_elem = ba_elem->next;
+        for (int i=0; i < LINE_COUNT; i++){
+                struct Asteroid_list *ba_elem = big_asteroids_array[i]->next;
+                while (ba_elem != NULL) {
+                    if (is_asteroid_on_screen(ba_elem->asteroid)) {
+                        draw_rectangle(ba_elem->asteroid->asteroidX, ba_elem->asteroid->asteroidY, ba_elem->asteroid->asteroidSize, ba_elem->asteroid->asteroidSize, 5);
+                    }
+                    ba_elem = ba_elem->next;
+                }
         }
-        
+
         glDisable(GL_TEXTURE_2D);
         
         //draw level
