@@ -62,7 +62,7 @@ void add_bullet(struct Bullet_list **b_array) {
                 temp = temp->next;
             } else if (!is_bullet_on_screen(temp->bullet)) {
                 temp->bullet = bullet;
-
+                
                 break;
             }
         }
@@ -104,7 +104,7 @@ void add_boss_bullet(struct Bullet_list **b_array) {
                 temp = temp->next;
             } else if (!is_bullet_on_screen(temp->bullet)) {
                 temp->bullet = bullet;
-
+                
                 break;
             }
         }
@@ -228,7 +228,6 @@ bool is_colliding_bbs(struct Bullet *b, struct Boss bs) {
 void update_boss_bullet_position(struct Bullet *bullet) {
     if (is_bullet_on_screen(bullet)) {
         bullet->bulletX -= bullet->bulletSpeed;
-
         if (!is_bullet_on_screen(bullet)) {
             int line_number = (bullet->bulletY - BORDERS_SIZE) / BA_SIZE;
             remove_from_blist(boss_bullet_array[line_number], bullet);
@@ -241,8 +240,8 @@ void update_boss_bullet_position(struct Bullet *bullet) {
 
 void update_bullet_position(struct Bullet *bullet) {
     if (is_bullet_on_screen(bullet)) {
-        //if(bullet->between) bullet->bulletX += bullet->bulletSpeed/2;
-        bullet->bulletX += bullet->bulletSpeed;
+        if (bullet->between) bullet->bulletX += bullet->bulletSpeed/2;
+        else bullet->bulletX += bullet->bulletSpeed;
 
         if (!is_bullet_on_screen(bullet)) {
             int line_number = (bullet->bulletY - BORDERS_SIZE) / BA_SIZE;
@@ -498,16 +497,15 @@ void check_bullet_asteroid_collisions(struct Asteroid_list **asteroids) {
                     player.playerScore++;
                     if (!megalovania_is_playing) {
                             PlaySound("..//..//sounds//hit_asteroid.wav", NULL, SND_FILENAME | SND_ASYNC);
-                        }
-                    
+                            if (asteroids == small_asteroids_array){
+                                maybe_spawn_heart(current_asteroid);
+                            }
+                    }
                     
                     remove_from_blist(bullet_array[i], current_bullet->bullet);
 
-                    if ((i+1) <= LINE_COUNT && current_bullet->bullet->between){
+                    if ((i+1) < LINE_COUNT && current_bullet->bullet->between){
                         remove_from_blist(bullet_array[i+1], current_bullet->bullet);
-                    }
-                    if (asteroids == small_asteroids_array){
-                        maybe_spawn_heart(current_asteroid);
                     }
 
                     int new_line_number = get_random_number() % LINE_COUNT;
@@ -524,6 +522,7 @@ void check_bullet_asteroid_collisions(struct Asteroid_list **asteroids) {
                 current_asteroid = current_asteroid->next;
             }
         current_bullet = current_bullet->next;
+        current_asteroid = asteroids[i]->next;
     }
     }
     
@@ -533,58 +532,61 @@ void check_asteroid_player_collisions(struct Asteroid_list **asteroid_array)
 {
     int line_number = (player.playerY - BORDERS_SIZE) / BA_SIZE;
     struct Asteroid_list *current_asteroid = asteroid_array[line_number]->next;
+    struct Asteroid_list *next_asteroid;
     while(current_asteroid != NULL) {
-                if (is_colliding_ap(current_asteroid->asteroid, player) \
-                && is_asteroid_on_screen(current_asteroid->asteroid)) {
-                    if (!player.godMode) {
-                        player.playerLives -= 1;
-                    }
-                    if (!megalovania_is_playing) {
-                        PlaySound("..//..//sounds//hit_player.wav", NULL, SND_FILENAME | SND_ASYNC);
-                    }
-                    int new_line_number = get_random_number() % LINE_COUNT;
-                    
-                    remove_from_alist(asteroid_array[line_number],current_asteroid->asteroid);
-                    add_to_alist(asteroid_array[new_line_number], current_asteroid);
+        next_asteroid = current_asteroid->next;
+        if (is_colliding_ap(current_asteroid->asteroid, player) \
+        && is_asteroid_on_screen(current_asteroid->asteroid)) {
+            if (!player.godMode) {
+                player.playerLives -= 1;
+            }
+            if (!megalovania_is_playing) {
+                PlaySound("..//..//sounds//hit_player.wav", NULL, SND_FILENAME | SND_ASYNC);
+            }
+            int new_line_number = get_random_number() % LINE_COUNT;
+            
+            remove_from_alist(asteroid_array[line_number],current_asteroid->asteroid);
+            add_to_alist(asteroid_array[new_line_number], current_asteroid);
 
-                    current_asteroid->asteroid->line = new_line_number;
-                    current_asteroid->asteroid->asteroidY = (new_line_number * BA_SIZE + BORDERS_SIZE);//!!
-                    current_asteroid->asteroid->asteroidX = WINDOW_WIDTH - current_asteroid->asteroid->asteroidSize;
-
-                    break;
-                }
-                current_asteroid = current_asteroid->next;
+            current_asteroid->asteroid->line = new_line_number;
+            current_asteroid->asteroid->asteroidY = (new_line_number * BA_SIZE + BORDERS_SIZE);//!!
+            current_asteroid->asteroid->asteroidX = WINDOW_WIDTH - current_asteroid->asteroid->asteroidSize;
+        }
+        current_asteroid = next_asteroid;
     }
-    if (current_asteroid != NULL || line_number == LINE_COUNT) return; //collision happened or last line
+    if (line_number == LINE_COUNT) return; //last line
 
     current_asteroid = asteroid_array[line_number+1];
     while(current_asteroid != NULL) {
-            if (is_colliding_ap(current_asteroid->asteroid, player) \
-            && is_asteroid_on_screen(current_asteroid->asteroid)) {
-                if (!player.godMode) {
-                    player.playerLives -= 1;
-                }
-                if (!megalovania_is_playing) {
-                    PlaySound("..//..//sounds//hit_player.wav", NULL, SND_FILENAME | SND_ASYNC);
-                }
-
-                int new_line_number = get_random_number() % LINE_COUNT;
-                    
-                remove_from_alist(asteroid_array[line_number+1],current_asteroid->asteroid);
-                add_to_alist(asteroid_array[new_line_number], current_asteroid);
-
-                current_asteroid->asteroid->line = new_line_number;
-                current_asteroid->asteroid->asteroidY = (new_line_number * BA_SIZE + BORDERS_SIZE);//!!
-                current_asteroid->asteroid->asteroidX = WINDOW_WIDTH - current_asteroid->asteroid->asteroidSize;
-
-                break;
+        next_asteroid = current_asteroid->next;
+        if (is_colliding_ap(current_asteroid->asteroid, player) \
+        && is_asteroid_on_screen(current_asteroid->asteroid)) {
+            if (!player.godMode) {
+                player.playerLives -= 1;
             }
-            current_asteroid = current_asteroid->next;
+            if (!megalovania_is_playing) {
+                PlaySound("..//..//sounds//hit_player.wav", NULL, SND_FILENAME | SND_ASYNC);
+            }
+
+            int new_line_number = get_random_number() % LINE_COUNT;
+                
+            remove_from_alist(asteroid_array[line_number+1],current_asteroid->asteroid);
+            add_to_alist(asteroid_array[new_line_number], current_asteroid);
+
+            current_asteroid->asteroid->line = new_line_number;
+            current_asteroid->asteroid->asteroidY = (new_line_number * BA_SIZE + BORDERS_SIZE);//!!
+            current_asteroid->asteroid->asteroidX = WINDOW_WIDTH - current_asteroid->asteroid->asteroidSize;
+
+        }
+        current_asteroid = next_asteroid;
     }
 }
 
 
 void update(int aux) {
+    if (megalovania_is_playing){
+        add_bullet(bullet_array);
+    }
     clock_t start = clock();//! START
     if (!player.godMode && update_count % 16 == 0 ){
         update_player_state();
@@ -644,6 +646,6 @@ void update(int aux) {
     glutPostRedisplay();
     clock_t end = clock(); //! STOP
     double ms_duration = (double)(end - start) / CLOCKS_PER_SEC * 1000;
-    printf("Time to execute update() - %f ms\n", ms_duration);
+    //printf("Time to execute update() - %f ms\n", ms_duration);
     glutTimerFunc(25, update, 0);
 }
