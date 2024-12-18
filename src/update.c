@@ -193,11 +193,9 @@ void update_asteroid_position(struct Asteroid *asteroid) {
 }
 
 void update(int aux) {
-    if (megalovania_is_playing){
+    if (megalovania_is_playing) {
         add_bullet(bullets);
     }
-
-    clock_t start = clock();//! START
 
     if (player.playerLives == 0 && player_is_dead == false) {
         if (!megalovania_is_playing) {
@@ -378,6 +376,7 @@ void update(int aux) {
                 if (!player.godMode) {
                     player.playerLives -= 1;
                 }
+
                 if (!megalovania_is_playing) {
                     PlaySound("..//..//sounds//hit_player.wav", NULL, SND_FILENAME | SND_ASYNC);
                 }
@@ -430,6 +429,7 @@ void update(int aux) {
                 if (!player.godMode) {
                     player.playerLives -= 1;
                 }
+
                 if (!megalovania_is_playing) {
                     PlaySound("..//..//sounds//hit_player.wav", NULL, SND_FILENAME | SND_ASYNC);
                 }
@@ -484,6 +484,7 @@ void update(int aux) {
                 if (!player.godMode) {
                     player.playerLives -= 1;
                 }
+
                 if (!megalovania_is_playing) {
                     PlaySound("..//..//sounds//hit_player.wav", NULL, SND_FILENAME | SND_ASYNC);
                 }
@@ -513,10 +514,5 @@ void update(int aux) {
     }
     
     glutPostRedisplay();
-
-    clock_t end = clock(); //! STOP
-    double ms_duration = (double)(end - start) / CLOCKS_PER_SEC * 1000;
-    printf("Time to execute  - %f ms\n", ms_duration);
-    
     glutTimerFunc(25, update, 0);
 }
