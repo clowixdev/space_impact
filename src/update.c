@@ -25,8 +25,12 @@ bool is_asteroid_on_screen(struct Asteroid *a) {
     }
 }
 
-void add_bullet(struct Bullet_list *bl_head) {
-    struct Bullet_list *temp = bl_head;
+void add_bullet(struct Bullet_list **b_array) {
+    int y_coordinate = player.playerY + player.playerSize / 2 - B_SIZE / 2;
+    int line_number = (y_coordinate - BORDERS_SIZE) / BA_SIZE;
+    bool flag_between = false;
+    struct Bullet_list *temp = b_array[line_number];
+    struct Bullet *bullet;
     
     while (true) {
         if (is_bullet_on_screen(temp->bullet) && temp->next == NULL) {
@@ -35,16 +39,44 @@ void add_bullet(struct Bullet_list *bl_head) {
         } else if (is_bullet_on_screen(temp->bullet) && temp->next != NULL) {
             temp = temp->next;
         } else if (!is_bullet_on_screen(temp->bullet)) {
-            temp->bullet->bulletY = player.playerY + player.playerSize / 2 - temp->bullet->bulletSize / 2;
+            temp->bullet->bulletY = y_coordinate;
             temp->bullet->bulletX = player.playerX;
+            bullet = temp->bullet;
+            if(((y_coordinate + bullet->bulletSize - BORDERS_SIZE) / BA_SIZE) != line_number){
+                flag_between = true;
+            }
+            bullet->between = flag_between;
 
             break;
         }
     }
+
+    if (flag_between){ //bullet between lines
+        temp = b_array[line_number+1];
+        while (true) {
+            if (is_bullet_on_screen(temp->bullet) && temp->next == NULL) {
+                struct Bullet_list *bl_elem = init_bullet_list_elem();
+                temp->next = bl_elem;
+            } else if (is_bullet_on_screen(temp->bullet) && temp->next != NULL) {
+                temp = temp->next;
+            } else if (!is_bullet_on_screen(temp->bullet)) {
+                temp->bullet = bullet;
+
+                break;
+            }
+        }
+    }
 }
 
-void add_boss_bullet(struct Bullet_list *bl_head) {
-    struct Bullet_list *temp = bl_head;
+void add_boss_bullet(struct Bullet_list **b_array) {
+    int y_coordinate = boss.bossY + boss.bossSize / 2 - B_SIZE / 2;
+    int line_number = (y_coordinate - BORDERS_SIZE) / BA_SIZE;
+    bool flag_between = false;
+    if(((y_coordinate + B_SIZE - BORDERS_SIZE) / BA_SIZE) != line_number){
+        flag_between = true;
+    }
+    struct Bullet_list *temp = b_array[line_number];
+    struct Bullet *bullet;
     
     while (true) {
         if (is_bullet_on_screen(temp->bullet) && temp->next == NULL) {
@@ -53,35 +85,64 @@ void add_boss_bullet(struct Bullet_list *bl_head) {
         } else if (is_bullet_on_screen(temp->bullet) && temp->next != NULL) {
             temp = temp->next;
         } else if (!is_bullet_on_screen(temp->bullet)) {
-            temp->bullet->bulletY = boss.bossY + boss.bossSize / 2 - temp->bullet->bulletSize / 2;
+            temp->bullet->bulletY = y_coordinate;
             temp->bullet->bulletX = boss.bossX;
+            bullet = temp->bullet;
+            bullet->between = flag_between;
 
             break;
         }
     }
+    if (flag_between){ //bullet between lines
+        temp = b_array[line_number+1];
+        while (true) {
+            if (is_bullet_on_screen(temp->bullet) && temp->next == NULL) {
+                struct Bullet_list *bl_elem = init_bullet_list_elem();
+                temp->next = bl_elem;
+            } else if (is_bullet_on_screen(temp->bullet) && temp->next != NULL) {
+                temp = temp->next;
+            } else if (!is_bullet_on_screen(temp->bullet)) {
+                temp->bullet = bullet;
+
+                break;
+            }
+        }
+    }
 }
 
-void add_asteroid(struct Asteroid_list *al_head) {
+void add_asteroid(struct Asteroid_list **a_array) {
     char asteroid_type = 'o';
-    if (al_head == small_asteroids) {
+    int asteroidsize = -10;
+    int line_number;
+    int y_coordinate;
+    if (a_array == small_asteroids_array) {
+        line_number = get_random_number() % LINE_COUNT;
         asteroid_type = 's';
-    } else if (al_head == medium_asteroids) {
+        asteroidsize = SA_SIZE;
+        y_coordinate = (BORDERS_SIZE + line_number*BA_SIZE) + get_random_number() % (BA_SIZE - asteroidsize);
+    } else if (a_array == medium_asteroids_array) {
+        line_number = get_random_number() % LINE_COUNT;
         asteroid_type = 'm';
-    } else if (al_head == big_asteroids) {
+        asteroidsize = MA_SIZE;
+        y_coordinate = (BORDERS_SIZE + line_number*BA_SIZE) + get_random_number() % (BA_SIZE - asteroidsize);
+    } else if (a_array == big_asteroids_array) {
+        line_number = get_random_number() % LINE_COUNT;
+        y_coordinate = (BORDERS_SIZE + line_number*BA_SIZE);    
         asteroid_type = 'b';
+        asteroidsize = BA_SIZE;
     }
 
-    struct Asteroid_list *temp = al_head;
-    
+    struct Asteroid_list *temp = a_array[line_number];
     while (temp != NULL) {
         if (temp->next == NULL) {
             struct Asteroid_list *al_elem = init_asteroid_list_elem(asteroid_type);
             temp->next = al_elem;
 
-            temp->next->asteroid->asteroidY = get_random_number() % ((WINDOW_HEIGHT - BORDERS_SIZE - temp->asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
-            temp->next->asteroid->asteroidX = WINDOW_WIDTH - temp->asteroid->asteroidSize;
+            temp->next->asteroid->asteroidY = y_coordinate;
+            temp->next->asteroid->asteroidX = WINDOW_WIDTH - asteroidsize;
+            temp->next->asteroid->line = line_number;
 
-            break;
+            return;
         }
 
         temp = temp->next;
@@ -168,31 +229,59 @@ void update_boss_bullet_position(struct Bullet *bullet) {
         bullet->bulletX -= bullet->bulletSpeed;
 
         if (!is_bullet_on_screen(bullet)) {
-            remove_from_blist(boss_bullets, bullet);
+            int line_number = (bullet->bulletY - BORDERS_SIZE) / BA_SIZE;
+            remove_from_blist(boss_bullet_array[line_number], bullet);
+            if (bullet->between){
+                remove_from_blist(boss_bullet_array[line_number+1], bullet);
+            }
         }
     }
 }
 
 void update_bullet_position(struct Bullet *bullet) {
     if (is_bullet_on_screen(bullet)) {
+        //if(bullet->between) bullet->bulletX += bullet->bulletSpeed/2;
         bullet->bulletX += bullet->bulletSpeed;
 
         if (!is_bullet_on_screen(bullet)) {
-            remove_from_blist(bullets, bullet);
+            int line_number = (bullet->bulletY - BORDERS_SIZE) / BA_SIZE;
+            remove_from_blist(bullet_array[line_number], bullet);
         }
     }
 }
 
-void update_asteroid_position(struct Asteroid *asteroid) {
+void update_asteroid_position(struct Asteroid_list **asteroid_array, struct Asteroid *asteroid) {
     if (is_asteroid_on_screen(asteroid)) {
         asteroid->asteroidX -= asteroid->asteroidSpeed + (3 * (player.currentLevel - 1));
     } else if (!is_asteroid_on_screen(asteroid) && player.playerLives > 0) {
-        asteroid->asteroidY = get_random_number() % ((WINDOW_HEIGHT - BORDERS_SIZE - asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
+        if (megalovania_is_playing){
+            asteroid->asteroidX = WINDOW_WIDTH - asteroid->asteroidSize;
+            return;
+        }
+        int rand = get_random_number();
+        int new_line_number = rand % LINE_COUNT;
+        int size_offset = BA_SIZE - asteroid->asteroidSize;
+        int size = asteroid->asteroidSize;
+        struct Asteroid_list * list_elem;
+        list_elem = remove_from_alist(asteroid_array[asteroid->line],asteroid);
+        add_to_alist(asteroid_array[new_line_number],list_elem);
+        asteroid->asteroidY = (new_line_number * BA_SIZE + BORDERS_SIZE);
+        if (asteroid->asteroidSize < BA_SIZE) {
+            asteroid->asteroidY += rand % size_offset;
+        }
+        asteroid->line = new_line_number;
         asteroid->asteroidX = WINDOW_WIDTH - asteroid->asteroidSize;
     }
 }
 
 void update_player_state() {
+    if (game_just_started == true) { //!! move to another place
+        add_asteroid(small_asteroids_array);
+        add_asteroid(medium_asteroids_array);
+        add_asteroid(big_asteroids_array);
+        game_just_started = false;
+    }
+
     if (player.playerLives == 0 && player_is_dead == false) {
         if (!megalovania_is_playing) {
             PlaySound("..//..//sounds//lose.wav", NULL, SND_FILENAME | SND_ASYNC);
@@ -216,9 +305,9 @@ void update_player_state() {
             PlaySound("..//..//sounds//next_level.wav", NULL, SND_FILENAME | SND_ASYNC);
         }
 
-        add_asteroid(small_asteroids);
-        add_asteroid(medium_asteroids);
-        add_asteroid(big_asteroids);
+        add_asteroid(small_asteroids_array);
+        add_asteroid(medium_asteroids_array);
+        add_asteroid(big_asteroids_array);
 
         player.currentLevel = 2;
         changed_to_second = true;
@@ -229,9 +318,9 @@ void update_player_state() {
             PlaySound("..//..//sounds//next_level.wav", NULL, SND_FILENAME | SND_ASYNC);
         }
 
-        add_asteroid(small_asteroids);
-        add_asteroid(medium_asteroids);
-        add_asteroid(big_asteroids);
+        add_asteroid(small_asteroids_array);
+        add_asteroid(medium_asteroids_array);
+        add_asteroid(big_asteroids_array);
 
         player.currentLevel = 3;
         changed_to_third = true;
@@ -278,15 +367,18 @@ void update_boss_state(){
         if (boss_delay < BOSS_DELAY_VALUE) {
             boss_delay++;
         } else if (boss_delay == BOSS_DELAY_VALUE){
-            add_boss_bullet(boss_bullets);
+            add_boss_bullet(boss_bullet_array);
             boss_delay = 0;
         }
 
         //update boss_bullet position
-        for_bullet_list(boss_bullets, update_boss_bullet_position);
+        for (int i = 0; i < LINE_COUNT; i++){
+            for_bullet_list(boss_bullets, update_boss_bullet_position);
+        }
 
         //boss_bullet - player collision
-        struct Bullet_list *check_bsp = boss_bullets;
+        int line_number = (player.playerY - BORDERS_SIZE) / BA_SIZE;
+        struct Bullet_list *check_bsp = boss_bullet_array[line_number];
         while (check_bsp != NULL) {
             if (is_colliding_bp(check_bsp->bullet, player)) {
                 if (!player.godMode) {
@@ -296,15 +388,37 @@ void update_boss_state(){
                     PlaySound("..//..//sounds//hit_player.wav", NULL, SND_FILENAME | SND_ASYNC);
                 }
                 
-                remove_from_blist(boss_bullets, check_bsp->bullet);
 
+                remove_from_blist(boss_bullet_array[line_number], check_bsp->bullet);
+                if ((line_number + 1) <= LINE_COUNT) remove_from_blist(boss_bullet_array[line_number+1], check_bsp->bullet);
                 break;
             }
             check_bsp = check_bsp->next;
         }
+        if ((line_number*BA_SIZE + BORDERS_SIZE + player.playerSize) / BA_SIZE != line_number){ //between
+            struct Bullet_list *check_bsp = boss_bullet_array[line_number+1];
+            while (check_bsp != NULL) {
+                if (is_colliding_bp(check_bsp->bullet, player)) {
+                    if (!player.godMode) {
+                        player.playerLives -= 1;
+                    }
+                    if (!megalovania_is_playing) {
+                        PlaySound("..//..//sounds//hit_player.wav", NULL, SND_FILENAME | SND_ASYNC);
+                    }
+                    
+
+                    remove_from_blist(boss_bullet_array[line_number], check_bsp->bullet);
+                    if ((line_number + 1) <= LINE_COUNT) remove_from_blist(boss_bullet_array[line_number+1], check_bsp->bullet);
+                    break;
+                }
+                check_bsp = check_bsp->next;
+            }
+        }
+
 
         //bullet - boss collision
-        struct Bullet_list *check_bbs = bullets;
+        line_number = (boss.bossY - BORDERS_SIZE) / BA_SIZE;
+        struct Bullet_list *check_bbs = bullet_array[line_number];
         while (check_bbs != NULL) {
             if (is_colliding_bbs(check_bbs->bullet, boss)) {
                 boss.bossLives -= 1;
@@ -312,13 +426,49 @@ void update_boss_state(){
                     PlaySound("..//..//sounds//hit_boss.wav", NULL, SND_FILENAME | SND_ASYNC);
                 }
                 
-                remove_from_blist(bullets, check_bbs->bullet);
-
+                remove_from_blist(bullet_array[line_number], check_bbs->bullet);
+                if ((line_number + 1) <= LINE_COUNT) remove_from_blist(bullet_array[line_number+1], check_bsp->bullet);
                 break;
             }
             check_bbs = check_bbs->next;
         }
+        line_number++;
+        check_bbs = bullet_array[line_number];
+        while (check_bbs != NULL) {
+            if (is_colliding_bbs(check_bbs->bullet, boss)) {
+                boss.bossLives -= 1;
+                if (!megalovania_is_playing) {
+                    PlaySound("..//..//sounds//hit_boss.wav", NULL, SND_FILENAME | SND_ASYNC);
+                }
+                
+                remove_from_blist(bullet_array[line_number], check_bbs->bullet);
+                if ((line_number + 1) <= LINE_COUNT) remove_from_blist(bullet_array[line_number+1], check_bsp->bullet);
+                break;
+            }
+            check_bbs = check_bbs->next;
+        }
+        if ((line_number+1) <= LINE_COUNT && 
+        ((boss.bossY + boss.bossSize - BORDERS_SIZE) / BA_SIZE - (boss.bossY - BORDERS_SIZE) / BA_SIZE ) == 2 )
+        {
+            line_number++;
+            check_bbs = bullet_array[line_number];
+            while (check_bbs != NULL) {
+                if (is_colliding_bbs(check_bbs->bullet, boss)) {
+                    boss.bossLives -= 1;
+                    if (!megalovania_is_playing) {
+                        PlaySound("..//..//sounds//hit_boss.wav", NULL, SND_FILENAME | SND_ASYNC);
+                    }
+                    
+                    remove_from_blist(bullet_array[line_number], check_bbs->bullet);
+                    if ((line_number + 1) <= LINE_COUNT) remove_from_blist(bullet_array[line_number+1], check_bsp->bullet);
+                    break;
+                }
+                check_bbs = check_bbs->next;
+            }
+        }
+
     }
+
 }
 
 void maybe_spawn_heart(struct Asteroid_list *a){
@@ -333,40 +483,80 @@ void maybe_spawn_heart(struct Asteroid_list *a){
     }
 }
 
-void check_bullet_asteroid_collisions(struct Asteroid_list *asteroids) {
-    struct Asteroid_list *current_asteroid = asteroids;
-    struct Bullet_list *current_bullet = bullets;
+void check_bullet_asteroid_collisions(struct Asteroid_list **asteroids) {
+    for (int i = 0; i < LINE_COUNT; i++)
+    {
+        struct Asteroid_list *current_asteroid = asteroids[i]->next;
+        struct Bullet_list *current_bullet = bullet_array[i];
+        while (current_bullet != NULL) {
+            while (current_asteroid != NULL) {
+                if (is_colliding_ba(current_bullet->bullet, current_asteroid->asteroid) &&
+                    is_bullet_on_screen(current_bullet->bullet) &&
+                    is_asteroid_on_screen(current_asteroid->asteroid)) {
 
-    while (current_bullet != NULL) {
-        current_asteroid = asteroids;
-        while (current_asteroid != NULL) {
-            if (is_colliding_ba(current_bullet->bullet, current_asteroid->asteroid) &&
-                is_bullet_on_screen(current_bullet->bullet) &&
-                is_asteroid_on_screen(current_asteroid->asteroid)) {
+                    player.playerScore++;
+                    if (!megalovania_is_playing) {
+                            PlaySound("..//..//sounds//hit_asteroid.wav", NULL, SND_FILENAME | SND_ASYNC);
+                        }
+                    
+                    
+                    remove_from_blist(bullet_array[i], current_bullet->bullet);
 
-                player.playerScore++;
-                if (!megalovania_is_playing) {
-                        PlaySound("..//..//sounds//hit_asteroid.wav", NULL, SND_FILENAME | SND_ASYNC);
+                    if ((i+1) <= LINE_COUNT && current_bullet->bullet->between){
+                        remove_from_blist(bullet_array[i+1], current_bullet->bullet);
                     }
-                
-                remove_from_blist(bullets, current_bullet->bullet);
-                
-                maybe_spawn_heart(current_asteroid);
+                    if (asteroids == small_asteroids_array){
+                        maybe_spawn_heart(current_asteroid);
+                    }
 
-                current_asteroid->asteroid->asteroidY = get_random_number() % ((WINDOW_HEIGHT - BORDERS_SIZE - current_asteroid->asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
-                current_asteroid->asteroid->asteroidX = WINDOW_WIDTH - current_asteroid->asteroid->asteroidSize;
-             
+                    int new_line_number = get_random_number() % LINE_COUNT;
 
-                break;
+                    remove_from_alist(asteroids[i],current_asteroid->asteroid);
+                    add_to_alist(asteroids[new_line_number], current_asteroid);
+
+                    current_asteroid->asteroid->line = new_line_number;
+                    current_asteroid->asteroid->asteroidY = (new_line_number * BA_SIZE + BORDERS_SIZE);//!!!
+                    current_asteroid->asteroid->asteroidX = WINDOW_WIDTH - current_asteroid->asteroid->asteroidSize;
+                
+                    break;
+                }
+                current_asteroid = current_asteroid->next;
             }
-            current_asteroid = current_asteroid->next;
-        }
         current_bullet = current_bullet->next;
     }
+    }
+    
 }
 
-void check_asteroid_player_collisions(struct Asteroid_list *current_asteroid)
+void check_asteroid_player_collisions(struct Asteroid_list **asteroid_array)
 {
+    int line_number = (player.playerY - BORDERS_SIZE) / BA_SIZE;
+    struct Asteroid_list *current_asteroid = asteroid_array[line_number]->next;
+    while(current_asteroid != NULL) {
+                if (is_colliding_ap(current_asteroid->asteroid, player) \
+                && is_asteroid_on_screen(current_asteroid->asteroid)) {
+                    if (!player.godMode) {
+                        player.playerLives -= 1;
+                    }
+                    if (!megalovania_is_playing) {
+                        PlaySound("..//..//sounds//hit_player.wav", NULL, SND_FILENAME | SND_ASYNC);
+                    }
+                    int new_line_number = get_random_number() % LINE_COUNT;
+                    
+                    remove_from_alist(asteroid_array[line_number],current_asteroid->asteroid);
+                    add_to_alist(asteroid_array[new_line_number], current_asteroid);
+
+                    current_asteroid->asteroid->line = new_line_number;
+                    current_asteroid->asteroid->asteroidY = (new_line_number * BA_SIZE + BORDERS_SIZE);//!!
+                    current_asteroid->asteroid->asteroidX = WINDOW_WIDTH - current_asteroid->asteroid->asteroidSize;
+
+                    break;
+                }
+                current_asteroid = current_asteroid->next;
+    }
+    if (current_asteroid != NULL || line_number == LINE_COUNT) return; //collision happened or last line
+
+    current_asteroid = asteroid_array[line_number+1];
     while(current_asteroid != NULL) {
             if (is_colliding_ap(current_asteroid->asteroid, player) \
             && is_asteroid_on_screen(current_asteroid->asteroid)) {
@@ -377,26 +567,34 @@ void check_asteroid_player_collisions(struct Asteroid_list *current_asteroid)
                     PlaySound("..//..//sounds//hit_player.wav", NULL, SND_FILENAME | SND_ASYNC);
                 }
 
-                current_asteroid->asteroid->asteroidY = get_random_number() % ((WINDOW_HEIGHT - BORDERS_SIZE - current_asteroid->asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
+                int new_line_number = get_random_number() % LINE_COUNT;
+                    
+                remove_from_alist(asteroid_array[line_number+1],current_asteroid->asteroid);
+                add_to_alist(asteroid_array[new_line_number], current_asteroid);
+
+                current_asteroid->asteroid->line = new_line_number;
+                current_asteroid->asteroid->asteroidY = (new_line_number * BA_SIZE + BORDERS_SIZE);//!!
                 current_asteroid->asteroid->asteroidX = WINDOW_WIDTH - current_asteroid->asteroid->asteroidSize;
 
                 break;
             }
             current_asteroid = current_asteroid->next;
-        }
+    }
 }
 
-void update(int aux) {
 
-    if (!player.godMode && update_count %16==0 ){
+void update(int aux) {
+    if (!player.godMode && update_count % 16 == 0){
         update_player_state();
     }
 
      if (!player.godMode && player.currentLevel == 4){
-        update_boss_state();
+        //update_boss_state();
     }
     //update player bullet position
-    for_bullet_list(bullets, update_bullet_position);
+    for( int i = 0; i < LINE_COUNT; i++){
+        for_bullet_list(bullet_array[i], update_bullet_position);
+    }
 
     if (!player.godMode)
     {
@@ -410,7 +608,7 @@ void update(int aux) {
         }
 
         //check heart-player collision
-        if (update_count %4==0 && is_colliding_hp(heart, player)) {
+        if (update_count % 4 == 0 && is_colliding_hp(heart, player)) {
             player.playerLives += 1;
             if (!megalovania_is_playing) {
                 PlaySound("..//..//sounds//heal.wav", NULL, SND_FILENAME | SND_ASYNC);
@@ -423,18 +621,20 @@ void update(int aux) {
 
     //collisions
     if (spawn_asteroids == true && player.currentLevel != 4) {
-        for_asteroid_list(small_asteroids, update_asteroid_position);
-        for_asteroid_list(medium_asteroids, update_asteroid_position);
-        for_asteroid_list(big_asteroids, update_asteroid_position);
+        for( int i = 0; i < LINE_COUNT; i++){
+            for_asteroid_list(small_asteroids_array,small_asteroids_array[i], update_asteroid_position);
+            for_asteroid_list(medium_asteroids_array,medium_asteroids_array[i], update_asteroid_position);
+            for_asteroid_list(big_asteroids_array,big_asteroids_array[i], update_asteroid_position);
+        }
 
-        if (update_count%2==0){
-            check_bullet_asteroid_collisions(small_asteroids);
-            check_bullet_asteroid_collisions(medium_asteroids);
-            check_bullet_asteroid_collisions(big_asteroids);
+        if (update_count % 2 == 0 ){
+            check_bullet_asteroid_collisions(small_asteroids_array);
+            check_bullet_asteroid_collisions(medium_asteroids_array);
+            check_bullet_asteroid_collisions(big_asteroids_array);
 
-            check_asteroid_player_collisions(small_asteroids);
-            check_asteroid_player_collisions(medium_asteroids);
-            check_asteroid_player_collisions(big_asteroids);
+            check_asteroid_player_collisions(small_asteroids_array);
+            check_asteroid_player_collisions(medium_asteroids_array);
+            check_asteroid_player_collisions(big_asteroids_array);
         }
     }
   
