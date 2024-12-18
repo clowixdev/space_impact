@@ -11,6 +11,7 @@ struct Player {
     int playerLives;
     int playerScore;
     bool godMode;
+    bool between;
 };
 
 struct Boss {
@@ -27,6 +28,7 @@ struct Bullet {
     int bulletX;
     int bulletY;
     int bulletSpeed;
+    bool between;
 };
 
 struct Asteroid {
@@ -34,6 +36,7 @@ struct Asteroid {
     int asteroidY;
     int asteroidX;
     int asteroidSpeed;
+    int line;
 };
 
 struct Heart {
