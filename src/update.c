@@ -584,7 +584,7 @@ void check_asteroid_player_collisions(struct Asteroid_list **asteroid_array)
 
 
 void update(int aux) {
-    if (!player.godMode && update_count % 16 == 0){
+    if (!player.godMode && update_count % 16 == 0 ){
         update_player_state();
     }
 
