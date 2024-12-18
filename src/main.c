@@ -46,6 +46,7 @@ struct Asteroid_list *medium_asteroids;
 struct Asteroid_list *big_asteroids;
 
 int update_count;
+int bullet_count = 0;
 
 int frameCountPerSecond; 
 int frameCount;         
