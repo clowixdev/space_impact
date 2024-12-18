@@ -4,7 +4,7 @@
 #define WINDOW_WIDTH 1200
 #define WINDOW_HEIGHT 700
 #define DRAW_TEXT_LENGTH 15
-#define BORDERS_SIZE 70
+#define BORDERS_SIZE 75
 #define TEXTURES_AMT 13
 #define WINDOW_CAPTION "Space Impact - 5131001/30002"
 
@@ -12,7 +12,7 @@
 #define FOR_THIRD_LEVEL 15
 #define FOR_BOSS_LEVEL 35
 #define BOSS_DELAY_VALUE 25
-#define MAX_ASTEROIDS_IN_BENCH_MODE 50000
+#define MAX_ASTEROIDS_IN_BENCH_MODE 100000
 
 #define SA_SPEED 4
 #define SA_SIZE 30
@@ -22,7 +22,7 @@
 #define BA_SIZE 50
 
 #define B_SIZE 10
-#define B_SPEED 20
+#define B_SPEED 10
 
 #define PT_FILENAME "../../themes/player.bmp"
 #define BT_FILENAME "../../themes/bullet.bmp"
