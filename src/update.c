@@ -3,6 +3,7 @@
 #include <mmsystem.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <time.h>
 
 #include "constants.h"
 #include "lists.h"
@@ -584,6 +585,7 @@ void check_asteroid_player_collisions(struct Asteroid_list **asteroid_array)
 
 
 void update(int aux) {
+    clock_t start = clock();//! START
     if (!player.godMode && update_count % 16 == 0 ){
         update_player_state();
     }
@@ -640,5 +642,8 @@ void update(int aux) {
   
     update_count++;
     glutPostRedisplay();
+    clock_t end = clock(); //! STOP
+    double ms_duration = (double)(end - start) / CLOCKS_PER_SEC * 1000;
+    printf("Time to execute update() - %f ms\n", ms_duration);
     glutTimerFunc(25, update, 0);
 }
