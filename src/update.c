@@ -330,8 +330,6 @@ void update(int aux) {
 
                 check_sap->asteroid->asteroidY = rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - check_sap->asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
                 check_sap->asteroid->asteroidX = WINDOW_WIDTH - check_sap->asteroid->asteroidSize;
-
-                break;
             }
             check_sap = check_sap->next;
         }
@@ -383,8 +381,6 @@ void update(int aux) {
 
                 check_map->asteroid->asteroidY = rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - check_map->asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
                 check_map->asteroid->asteroidX = WINDOW_WIDTH - check_map->asteroid->asteroidSize;
-
-                break;
             }
             check_map = check_map->next;
         }
@@ -436,8 +432,6 @@ void update(int aux) {
 
                 check_bap->asteroid->asteroidY = rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - check_bap->asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
                 check_bap->asteroid->asteroidX = WINDOW_WIDTH - check_bap->asteroid->asteroidSize;
-
-                break;
             }
             check_bap = check_bap->next;
         }
