@@ -39,7 +39,7 @@ void handle_keyboard(unsigned char key, int x, int y) {
 
             break;
         case 105: //i
-            //TODO infinity mode)))
+            //TODO infinity mode
             break;
     }
 }
@@ -47,25 +47,25 @@ void handle_keyboard(unsigned char key, int x, int y) {
 void handle_movement_keys(int key, int x, int y) {
     switch (key) {
         case GLUT_KEY_DOWN:
-            player.playerY -= 10;
+            player.playerY -= PLAYER_MOVE_STEP;
             if (player.playerY < BORDERS_SIZE) {
                 player.playerY = BORDERS_SIZE;
             }
             break;
         case GLUT_KEY_UP:
-            player.playerY += 10;
+            player.playerY += PLAYER_MOVE_STEP;
             if (player.playerY + player.playerSize + BORDERS_SIZE > WINDOW_HEIGHT) {
                 player.playerY = WINDOW_HEIGHT - player.playerSize - BORDERS_SIZE;
             }
             break;
         case GLUT_KEY_RIGHT:
-            player.playerX += 10;
-            if (player.playerX > player.playerSize + 200) {
-                player.playerX = player.playerSize + 200;
+            player.playerX += PLAYER_MOVE_STEP;
+            if (player.playerX > player.playerSize + PLAYER_MOVEMENTS_WIDTH) {
+                player.playerX = player.playerSize + PLAYER_MOVEMENTS_WIDTH;
             }
             break;
         case GLUT_KEY_LEFT:
-            player.playerX -= 10;
+            player.playerX -= PLAYER_MOVE_STEP;
             if (player.playerX < player.playerSize) {
                 player.playerX = player.playerSize;
             }

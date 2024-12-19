@@ -335,24 +335,24 @@ void init_game() {
     //!heart_texture - end
 
     //!objects initialization
-    player.currentLevel = 1;
-    player.playerSize = 50;
+    player.currentLevel = PLAYER_START_LEVEL;
+    player.playerSize = PLAYER_SIZE;
     player.playerY = WINDOW_HEIGHT / 2;
     player.playerX = player.playerSize;
-    player.playerScore = 0;
-    player.playerLives = 3;
+    player.playerScore = PLAYER_SCORE;
+    player.playerLives = PLAYER_LIVES;
     player.godMode = false;
 
-    boss.bossLives = 10;
-    boss.bossSize = 70;
+    boss.bossLives = BOSS_LIVES;
+    boss.bossSize = BOSS_SIZE;
     boss.bossY = WINDOW_HEIGHT / 2;
     boss.bossX = WINDOW_WIDTH - boss.bossSize * 2;
 
-    heart.heartSize = 30;
+    heart.heartSize = HEART_SIZE;
     heart.spawn = true;
     heart.heartX = WINDOW_WIDTH - heart.heartSize;
     heart.heartY = -heart.heartSize;
-    heart.heartSpeed = 4;
+    heart.heartSpeed = HEART_SPEED;
 
     boss.reached_top = true;
     boss.reached_bot = false;

@@ -16,6 +16,6 @@ void init_random_pool() {
 
 int get_random_number() {
     int num = random_pool[random_index];
-    random_index = (random_index+1) % RAND_POOL_SIZE;
+    random_index = (random_index + 1) % RAND_POOL_SIZE;
     return num;
 }

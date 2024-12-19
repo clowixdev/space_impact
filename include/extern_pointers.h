@@ -16,12 +16,12 @@ extern bool spawn_asteroids;
 extern bool game_just_started;
 extern bool megalovania_is_playing;
 
-extern int boss_delay;
-
 extern struct Player player;
 extern struct Boss boss;
 extern struct Heart heart;
 extern struct Menu main_menu;
+
+extern int boss_delay;
 
 extern struct Bullet_list *bullet_array[LINE_COUNT];
 extern struct Bullet_list *boss_bullet_array[LINE_COUNT];
@@ -36,7 +36,6 @@ extern struct Asteroid_list *medium_asteroids;
 extern struct Asteroid_list *big_asteroids;
 
 extern int update_count;
-
 extern int frameCountPerSecond; 
 extern int frameCount;         
 extern double previousTime;

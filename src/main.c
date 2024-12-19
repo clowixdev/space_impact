@@ -14,24 +14,12 @@
 #include "draw.h"
 #include "init.h"
 
+GLuint textures[TEXTURES_AMT+1] = { 0 };
+
 struct Player player;
 struct Boss boss;
 struct Heart heart;
 struct Menu main_menu;
-
-bool changed_to_second = false;
-bool changed_to_third = false;
-bool changed_to_fourth = false;
-bool player_is_dead = false;
-bool boss_is_dead = false;
-bool megalovania_is_playing = false;
-
-int boss_delay = 0;
-
-bool spawn_asteroids = true;
-bool game_just_started = true;
-
-GLuint textures[TEXTURES_AMT+1] = { 0 };
 
 struct Bullet_list *bullet_array[LINE_COUNT];
 struct Bullet_list *boss_bullet_array[LINE_COUNT];
@@ -45,8 +33,18 @@ struct Asteroid_list *small_asteroids;
 struct Asteroid_list *medium_asteroids;
 struct Asteroid_list *big_asteroids;
 
-int update_count;
+bool changed_to_second = false;
+bool changed_to_third = false;
+bool changed_to_fourth = false;
+bool player_is_dead = false;
+bool boss_is_dead = false;
+bool megalovania_is_playing = false;
+bool spawn_asteroids = true;
+bool game_just_started = true;
 
+int boss_delay = 0;
+
+int update_count;
 int frameCountPerSecond; 
 int frameCount;         
 double previousTime;
@@ -67,14 +65,16 @@ int main(int argc, char** argv) {
     for (int i=0; i < LINE_COUNT; i++){
         bullet_array[i] = init_bullet_list_elem();
         boss_bullet_array[i] = init_bullet_list_elem();
+
         small_asteroids_array[i] = init_asteroid_list_elem('s');
         small_asteroids_array[i]->asteroid->line = i;
+
         medium_asteroids_array[i] = init_asteroid_list_elem('m');
         medium_asteroids_array[i]->asteroid->line = i;
+
         big_asteroids_array[i] = init_asteroid_list_elem('b');
         big_asteroids_array[i]->asteroid->line = i;
     }
-
 
     main_menu_init();
     glutDisplayFunc(draw_main_menu);
