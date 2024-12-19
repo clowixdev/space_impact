@@ -45,6 +45,8 @@ bool game_just_started = true;
 int boss_delay = 0;
 
 int update_count;
+int bullet_count = 0;
+
 int frameCountPerSecond; 
 int frameCount;         
 double previousTime;

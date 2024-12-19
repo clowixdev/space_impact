@@ -36,6 +36,8 @@ extern struct Asteroid_list *medium_asteroids;
 extern struct Asteroid_list *big_asteroids;
 
 extern int update_count;
+extern int bullet_count;
+
 extern int frameCountPerSecond; 
 extern int frameCount;         
 extern double previousTime;

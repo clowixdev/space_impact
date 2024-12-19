@@ -27,6 +27,7 @@ bool is_asteroid_on_screen(struct Asteroid *a) {
 }
 
 void add_bullet(struct Bullet_list **b_array) {
+    bullet_count++;
     int y_coordinate = player.playerY + player.playerSize / 2 - B_SIZE / 2;
     int line_number = (y_coordinate - BORDERS_SIZE) / BA_SIZE;
     bool flag_between = false;
@@ -255,6 +256,7 @@ void update_bullet_position(struct Bullet *bullet) {
         if (!is_bullet_on_screen(bullet)) {
             int line_number = (bullet->bulletY - BORDERS_SIZE) / BA_SIZE;
             remove_from_blist(bullet_array[line_number], bullet);
+            bullet_count--;
         }
     }
 }
@@ -539,6 +541,7 @@ void check_bullet_asteroid_collisions(struct Asteroid_list **asteroids) {
                     if ((i + 1) < LINE_COUNT && current_bullet->bullet->between) {
                         remove_from_blist(bullet_array[i + 1], current_bullet->bullet);
                     }
+                    bullet_count--;
 
                     int new_line_number = get_random_number() % LINE_COUNT;
 
@@ -667,11 +670,12 @@ void update(int aux) {
             for_asteroid_list(big_asteroids_array, big_asteroids_array[i], update_asteroid_position);
         }
 
-        if (update_count % 2 == 0 ) {
-            check_bullet_asteroid_collisions(small_asteroids_array);
-            check_bullet_asteroid_collisions(medium_asteroids_array);
-            check_bullet_asteroid_collisions(big_asteroids_array);
-
+        if (update_count % 2 == 0 ){
+            if(bullet_count != 0){
+                check_bullet_asteroid_collisions(small_asteroids_array);
+                check_bullet_asteroid_collisions(medium_asteroids_array);
+                check_bullet_asteroid_collisions(big_asteroids_array);
+            }
             check_asteroid_player_collisions(small_asteroids_array);
             check_asteroid_player_collisions(medium_asteroids_array);
             check_asteroid_player_collisions(big_asteroids_array);
