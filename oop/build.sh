@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-x86_64-w64-mingw32-gcc "${workspaceRoot}src/main.c" "-g" "--std=c99" \
-"${workspaceRoot}src/keyboard.c" \
-"${workspaceRoot}src/update.c" \
-"${workspaceRoot}src/draw.c" \
-"${workspaceRoot}src/init.c" \
-"${workspaceRoot}src/lists.c" \
+x86_64-w64-mingw32-g++ "${workspaceRoot}src/main.cpp" \
+"${workspaceRoot}src/keyboard.cpp" \
+"${workspaceRoot}src/update.cpp" \
+"${workspaceRoot}src/draw.cpp" \
+"${workspaceRoot}src/init.cpp" \
+"${workspaceRoot}src/lists.cpp" \
 "-I${workspaceRoot}include" \
 "-I${workspaceRoot}../../dependencies/STB_IMAGE/include" \
 "-I${workspaceRoot}../../dependencies/GLFW/include" \
