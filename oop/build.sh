@@ -6,6 +6,9 @@ x86_64-w64-mingw32-g++ "${workspaceRoot}src/main.cpp" \
 "${workspaceRoot}src/draw.cpp" \
 "${workspaceRoot}src/init.cpp" \
 "${workspaceRoot}src/lists.cpp" \
+"${workspaceRoot}src/classes/asteroid.cpp" \
+"${workspaceRoot}src/classes/bullet.cpp" \
+"${workspaceRoot}src/classes/player.cpp" \
 "-I${workspaceRoot}include" \
 "-I${workspaceRoot}../../dependencies/STB_IMAGE/include" \
 "-I${workspaceRoot}../../dependencies/GLFW/include" \
