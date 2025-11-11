@@ -8,6 +8,8 @@
 #include "lists.h"
 #include "extern_pointers.h"
 
+#include "../include/classes/player.h"
+
 void main_menu_init() {
     glClearColor(1.0, 1.0, 1.0, 1.0);
     glMatrixMode(GL_PROJECTION);
@@ -334,6 +336,9 @@ void init_game() {
     //!heart_texture - end
 
     //!objects initialization
+    player_clw.init();
+    printf("PLAYER:\n\t%d\n\t%d\n\t%d\n\t%d", player_clw.getScore(), player_clw.getSize(), player_clw.getPosX(), player_clw.getPosY());
+
     player.currentLevel = 1;
     player.playerSize = 50;
     player.playerY = WINDOW_HEIGHT / 2;

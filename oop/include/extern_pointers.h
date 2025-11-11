@@ -2,6 +2,7 @@
 #define EXTERN_P_H
 
 #include "structures.h"
+#include "./classes/player.h"
 #include "lists.h"
 
 extern GLuint textures[TEXTURES_AMT+1];
@@ -20,6 +21,8 @@ extern struct Player player;
 extern struct Boss boss;
 extern struct Heart heart;
 extern struct Menu main_menu;
+
+extern class PlayerClass player_clw;
 
 extern struct Bullet_list *bullets;
 extern struct Bullet_list *boss_bullets;

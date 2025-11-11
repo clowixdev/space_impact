@@ -14,10 +14,14 @@
 #include "draw.h"
 #include "init.h"
 
+#include "classes/player.h"
+
 struct Player player;
 struct Boss boss;
 struct Heart heart;
 struct Menu main_menu;
+
+PlayerClass *player_clw = new PlayerClass();
 
 bool changed_to_second = false;
 bool changed_to_third = false;
