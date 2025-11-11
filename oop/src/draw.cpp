@@ -111,7 +111,7 @@ void draw_scene() {
         struct Bullet_list *bullet_elem = bullets;
         while (bullet_elem != NULL) {
             if (is_bullet_on_screen(bullet_elem->bullet)) {
-                draw_rectangle(bullet_elem->bullet->bulletX, bullet_elem->bullet->bulletY, bullet_elem->bullet->bulletSize, bullet_elem->bullet->bulletSize, 1);
+                draw_rectangle(bullet_elem->bullet->getPosX(), bullet_elem->bullet->getPosY(), bullet_elem->bullet->getSize(), bullet_elem->bullet->getSize(), 1);
             }
             bullet_elem = bullet_elem->next;
         }
@@ -125,7 +125,7 @@ void draw_scene() {
         struct Bullet_list *boss_bullet_elem = boss_bullets;
         while (boss_bullet_elem != NULL) {
             if (is_bullet_on_screen(boss_bullet_elem->bullet)) {
-                draw_rectangle(boss_bullet_elem->bullet->bulletX, boss_bullet_elem->bullet->bulletY, boss_bullet_elem->bullet->bulletSize, boss_bullet_elem->bullet->bulletSize, 2);
+                draw_rectangle(boss_bullet_elem->bullet->getPosX(), boss_bullet_elem->bullet->getPosY(), boss_bullet_elem->bullet->getSize(), boss_bullet_elem->bullet->getSize(), 2);
             }
             boss_bullet_elem = boss_bullet_elem->next;
         }
@@ -151,7 +151,7 @@ void draw_scene() {
         struct Bullet_list *bullet_elem = bullets;
         while (bullet_elem != NULL) {
             if (is_bullet_on_screen(bullet_elem->bullet)) {
-                draw_rectangle(bullet_elem->bullet->bulletX, bullet_elem->bullet->bulletY, bullet_elem->bullet->bulletSize, bullet_elem->bullet->bulletSize, 1);
+                draw_rectangle(bullet_elem->bullet->getPosX(), bullet_elem->bullet->getPosY(), bullet_elem->bullet->getSize(), bullet_elem->bullet->getSize(), 1);
             }
             bullet_elem = bullet_elem->next;
         }

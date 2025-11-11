@@ -39,15 +39,12 @@ struct Asteroid_list* init_asteroid_list_elem(char type) {
 };
 
 struct Bullet_list * init_bullet_list_elem() {
-    struct Bullet_list *bullet_list_elem = (struct Bullet_list *)calloc(1 ,sizeof(struct Bullet_list));
-    struct Bullet *bullet = (struct Bullet *)calloc(1 ,sizeof(struct Bullet));
+    struct Bullet_list *bullet_list_elem = (struct Bullet_list *)calloc(1, sizeof(struct Bullet_list));
+    class BulletClass *bullet_clw = new BulletClass();
 
-    bullet->bulletSize = B_SIZE;
-    bullet->bulletSpeed = B_SPEED;
-    bullet->bulletY = -bullet->bulletSize;
-    bullet->bulletX = -bullet->bulletSize;
+    bullet_clw->init();
 
-    bullet_list_elem->bullet = bullet;
+    bullet_list_elem->bullet = bullet_clw;
     bullet_list_elem->next = NULL;
     
     return bullet_list_elem;
@@ -74,10 +71,10 @@ void remove_from_alist(struct Asteroid_list *list_head, struct Asteroid *a) {
     }
 };
 
-void remove_from_blist(struct Bullet_list *list_head, struct Bullet *b) {
+void remove_from_blist(struct Bullet_list *list_head, class BulletClass *b) {
     if (list_head->bullet == b) {
-        list_head->bullet->bulletX = -b->bulletSize;
-        list_head->bullet->bulletY = -b->bulletSize;
+        list_head->bullet->setPosX(-b->getSize());
+        list_head->bullet->setPosY(-b->getSize());
 
         return;
     }
@@ -104,7 +101,7 @@ void for_asteroid_list(struct Asteroid_list *list_head, void (*func)(struct Aste
     }
 };
 
-void for_bullet_list(struct Bullet_list *list_head, void (*func)(struct Bullet*)) {
+void for_bullet_list(struct Bullet_list *list_head, void (*func)(class BulletClass*)) {
     struct Bullet_list *temp = list_head;
     while( temp != NULL )
     {

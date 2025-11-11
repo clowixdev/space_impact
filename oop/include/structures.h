@@ -2,6 +2,7 @@
 #define STRUCTURES_H
 
 #include <stdbool.h>
+#include "./classes/bullet.h"
 
 struct Player {
     int currentLevel;
@@ -49,7 +50,7 @@ struct Menu {
 };
 
 struct Bullet_list {
-    struct Bullet *bullet;
+    class BulletClass *bullet;
     struct Bullet_list *next;
 };
 

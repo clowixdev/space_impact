@@ -8,8 +8,6 @@
 #include "lists.h"
 #include "extern_pointers.h"
 
-#include "../include/classes/player.h"
-
 void main_menu_init() {
     glClearColor(1.0, 1.0, 1.0, 1.0);
     glMatrixMode(GL_PROJECTION);

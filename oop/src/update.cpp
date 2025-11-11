@@ -9,8 +9,8 @@
 #include "lists.h"
 #include "extern_pointers.h"
 
-bool is_bullet_on_screen(struct Bullet *b) {
-    if (b->bulletX >= 0 && b->bulletX <= WINDOW_WIDTH) {
+bool is_bullet_on_screen(class BulletClass *b) {
+    if (b->getPosX() >= 0 && b->getPosX() <= WINDOW_WIDTH) {
         return true;
     } else {
         return false;
@@ -35,8 +35,8 @@ void add_bullet(struct Bullet_list *bl_head) {
         } else if (is_bullet_on_screen(temp->bullet) && temp->next != NULL) {
             temp = temp->next;
         } else if (!is_bullet_on_screen(temp->bullet)) {
-            temp->bullet->bulletY = player_clw.getPosY() + player_clw.getSize() / 2 - temp->bullet->bulletSize / 2;
-            temp->bullet->bulletX = player_clw.getPosX();
+            temp->bullet->setPosY(player_clw.getPosY() + player_clw.getSize() / 2 - temp->bullet->getSize() / 2);
+            temp->bullet->setPosX(player_clw.getPosX());
 
             break;
         }
@@ -53,8 +53,8 @@ void add_boss_bullet(struct Bullet_list *bl_head) {
         } else if (is_bullet_on_screen(temp->bullet) && temp->next != NULL) {
             temp = temp->next;
         } else if (!is_bullet_on_screen(temp->bullet)) {
-            temp->bullet->bulletY = boss_clw.getPosY() + boss_clw.getSize() / 2 - temp->bullet->bulletSize / 2;
-            temp->bullet->bulletX = boss_clw.getPosX();
+            temp->bullet->setPosY(boss_clw.getPosY() + boss_clw.getSize() / 2 - temp->bullet->getSize() / 2);
+            temp->bullet->setPosX(boss_clw.getPosX());
 
             break;
         }
@@ -118,13 +118,13 @@ bool is_colliding_hp(HeartClass h, PlayerClass p) {
     }
 }
 
-bool is_colliding_ba(struct Bullet *b, struct Asteroid *a) {
+bool is_colliding_ba(class BulletClass *b, struct Asteroid *a) {
     if (
-        (b->bulletY >= a->asteroidY && b->bulletY <= a->asteroidY + a->asteroidSize \
-        && b->bulletX >= a->asteroidX && b->bulletX <= a->asteroidX + a->asteroidSize)
+        (b->getPosY() >= a->asteroidY && b->getPosY() <= a->asteroidY + a->asteroidSize \
+        && b->getPosX() >= a->asteroidX && b->getPosX() <= a->asteroidX + a->asteroidSize)
         ||
-        (b->bulletY+b->bulletSize >= a->asteroidY && b->bulletY+b->bulletSize <= a->asteroidY + a->asteroidSize \
-        && b->bulletX+b->bulletSize >= a->asteroidX && b->bulletX+b->bulletSize <= a->asteroidX + a->asteroidSize)
+        (b->getPosY()+b->getSize() >= a->asteroidY && b->getPosY()+b->getSize() <= a->asteroidY + a->asteroidSize \
+        && b->getPosX()+b->getSize() >= a->asteroidX && b->getPosX()+b->getSize() <= a->asteroidX + a->asteroidSize)
         ) 
     {
         return true;
@@ -133,13 +133,13 @@ bool is_colliding_ba(struct Bullet *b, struct Asteroid *a) {
     }
 }
 
-bool is_colliding_bp(struct Bullet *b, PlayerClass p) {
+bool is_colliding_bp(BulletClass *b, PlayerClass p) {
     if (
-        (b->bulletY >= p.getPosY() && b->bulletY <= p.getPosY() + p.getSize() \
-        && b->bulletX >= p.getPosX() && b->bulletX <= p.getPosX() + p.getSize())
+        (b->getPosY() >= p.getPosY() && b->getPosY() <= p.getPosY() + p.getSize() \
+        && b->getPosX() >= p.getPosX() && b->getPosX() <= p.getPosX() + p.getSize())
         ||
-        (b->bulletY+b->bulletSize >= p.getPosY() && b->bulletY+b->bulletSize <= p.getPosY() + p.getSize() \
-        && b->bulletX+b->bulletSize >= p.getPosX() && b->bulletX+b->bulletSize <= p.getPosX() + p.getSize())
+        (b->getPosY()+b->getSize() >= p.getPosY() && b->getPosY()+b->getSize() <= p.getPosY() + p.getSize() \
+        && b->getPosX()+b->getSize() >= p.getPosX() && b->getPosX()+b->getSize() <= p.getPosX() + p.getSize())
         )
     {
         return true;
@@ -148,13 +148,13 @@ bool is_colliding_bp(struct Bullet *b, PlayerClass p) {
     }
 }
 
-bool is_colliding_bbs(struct Bullet *b, BossClass bs) {
+bool is_colliding_bbs(BulletClass *b, BossClass bs) {
     if (
-        (b->bulletY >= bs.getPosY() && b->bulletY <= bs.getPosY() + bs.getSize() \
-        && b->bulletX >= bs.getPosX() && b->bulletX <= bs.getPosX() + bs.getSize())
+        (b->getPosY() >= bs.getPosY() && b->getPosY() <= bs.getPosY() + bs.getSize() \
+        && b->getPosX() >= bs.getPosX() && b->getPosX() <= bs.getPosX() + bs.getSize())
         ||
-        (b->bulletY+b->bulletSize >= bs.getPosY() && b->bulletY+b->bulletSize <= bs.getPosY() + bs.getSize() \
-        && b->bulletX+b->bulletSize >= bs.getPosX() && b->bulletX+b->bulletSize <= bs.getPosX() + bs.getSize())
+        (b->getPosY()+b->getSize() >= bs.getPosY() && b->getPosY()+b->getSize() <= bs.getPosY() + bs.getSize() \
+        && b->getPosX()+b->getSize() >= bs.getPosX() && b->getPosX()+b->getSize() <= bs.getPosX() + bs.getSize())
         )
     {
         return true;
@@ -163,9 +163,9 @@ bool is_colliding_bbs(struct Bullet *b, BossClass bs) {
     }
 }
 
-void update_boss_bullet_position(struct Bullet *bullet) {
+void update_boss_bullet_position(BulletClass *bullet) {
     if (is_bullet_on_screen(bullet)) {
-        bullet->bulletX -= bullet->bulletSpeed;
+        bullet->changePosX(-bullet->getSpeed());
 
         if (!is_bullet_on_screen(bullet)) {
             remove_from_blist(boss_bullets, bullet);
@@ -173,9 +173,9 @@ void update_boss_bullet_position(struct Bullet *bullet) {
     }
 }
 
-void update_bullet_position(struct Bullet *bullet) {
+void update_bullet_position(BulletClass *bullet) {
     if (is_bullet_on_screen(bullet)) {
-        bullet->bulletX += bullet->bulletSpeed;
+        bullet->changePosX(bullet->getSpeed());
 
         if (!is_bullet_on_screen(bullet)) {
             remove_from_blist(bullets, bullet);
