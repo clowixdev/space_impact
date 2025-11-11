@@ -13,7 +13,7 @@ bool is_colliding_ap(struct Asteroid *a, PlayerClass p);
 bool is_colliding_hp(struct Heart h, PlayerClass p);
 bool is_colliding_ba(struct Bullet *b, struct Asteroid *a);
 bool is_colliding_bp(struct Bullet *b, PlayerClass p);
-bool is_colliding_bbs(struct Bullet *b, struct Boss bs);
+bool is_colliding_bbs(struct Bullet *b, BossClass bs);
 void update_asteroid_position(struct Asteroid *asteroid);
 void update_bullet_position(struct Bullet *bullet);
 void update(int aux);

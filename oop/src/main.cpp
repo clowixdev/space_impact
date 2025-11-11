@@ -15,9 +15,12 @@
 #include "init.h"
 
 #include "classes/player.h"
+#include "classes/boss.h"
+
+class BossClass *boss_clw = new BossClass();
 
 // struct Player player;
-struct Boss boss;
+// struct Boss boss;
 struct Heart heart;
 struct Menu main_menu;
 

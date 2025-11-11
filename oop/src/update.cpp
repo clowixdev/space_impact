@@ -53,8 +53,8 @@ void add_boss_bullet(struct Bullet_list *bl_head) {
         } else if (is_bullet_on_screen(temp->bullet) && temp->next != NULL) {
             temp = temp->next;
         } else if (!is_bullet_on_screen(temp->bullet)) {
-            temp->bullet->bulletY = boss.bossY + boss.bossSize / 2 - temp->bullet->bulletSize / 2;
-            temp->bullet->bulletX = boss.bossX;
+            temp->bullet->bulletY = boss_clw.getPosY() + boss_clw.getSize() / 2 - temp->bullet->bulletSize / 2;
+            temp->bullet->bulletX = boss_clw.getPosX();
 
             break;
         }
@@ -148,13 +148,13 @@ bool is_colliding_bp(struct Bullet *b, PlayerClass p) {
     }
 }
 
-bool is_colliding_bbs(struct Bullet *b, struct Boss bs) {
+bool is_colliding_bbs(struct Bullet *b, BossClass bs) {
     if (
-        (b->bulletY >= bs.bossY && b->bulletY <= bs.bossY + bs.bossSize \
-        && b->bulletX >= bs.bossX && b->bulletX <= bs.bossX + bs.bossSize)
+        (b->bulletY >= bs.getPosY() && b->bulletY <= bs.getPosY() + bs.getSize() \
+        && b->bulletX >= bs.getPosX() && b->bulletX <= bs.getPosX() + bs.getSize())
         ||
-        (b->bulletY+b->bulletSize >= bs.bossY && b->bulletY+b->bulletSize <= bs.bossY + bs.bossSize \
-        && b->bulletX+b->bulletSize >= bs.bossX && b->bulletX+b->bulletSize <= bs.bossX + bs.bossSize)
+        (b->bulletY+b->bulletSize >= bs.getPosY() && b->bulletY+b->bulletSize <= bs.getPosY() + bs.getSize() \
+        && b->bulletX+b->bulletSize >= bs.getPosX() && b->bulletX+b->bulletSize <= bs.getPosX() + bs.getSize())
         )
     {
         return true;
@@ -206,7 +206,7 @@ void update(int aux) {
         spawn_asteroids = false;
     }
 
-    if (boss.bossLives == 0 && boss_is_dead == false) {
+    if (boss_clw.getLives() == 0 && boss_is_dead == false) {
         if (!megalovania_is_playing) {
             PlaySound("..//..//sounds//win.wav", NULL, SND_FILENAME | SND_ASYNC);
         }
@@ -440,23 +440,23 @@ void update(int aux) {
     //! update boss
     if (player_clw.getLevel() == 4 && boss_is_dead == false) {
         //boss movement
-        if (boss.bossY >= boss.bossSize && boss.reached_top == true) {
-            boss.bossY -= 3;
+        if (boss_clw.getPosY() >= boss_clw.getSize() && boss_clw.hasReachedTop() == true) {
+            boss_clw.changePosY(-3);
 
-            if (boss.bossY < boss.bossSize) {
-                boss.bossY = boss.bossSize;
-                boss.reached_bot = true;
-                boss.reached_top = false;
+            if (boss_clw.getPosY() < boss_clw.getSize()) {
+                boss_clw.setPosY(boss_clw.getSize());
+                boss_clw.setReachedBot(true);
+                boss_clw.setReachedTop(false);
             }
         } 
         
-        if (boss.bossY <= WINDOW_HEIGHT - boss.bossSize - 40 && boss.reached_bot == true) {
-            boss.bossY += 3;
+        if (boss_clw.getPosY() <= WINDOW_HEIGHT - boss_clw.getSize() - 40 && boss_clw.hasReachedBot() == true) {
+            boss_clw.changePosY(3);
 
-            if (boss.bossY > WINDOW_HEIGHT - boss.bossSize - 40) {
-                boss.bossY = WINDOW_HEIGHT - boss.bossSize - 40;
-                boss.reached_top = true;
-                boss.reached_bot = false;
+            if (boss_clw.getPosY() > WINDOW_HEIGHT - boss_clw.getSize() - 40) {
+                boss_clw.setPosY(WINDOW_HEIGHT - boss_clw.getSize() - 40);
+                boss_clw.setReachedBot(false);
+                boss_clw.setReachedTop(true);
             }
         }
 
@@ -493,8 +493,8 @@ void update(int aux) {
         //bullet - boss collision
         struct Bullet_list *check_bbs = bullets;
         while (check_bbs != NULL) {
-            if (is_colliding_bbs(check_bbs->bullet, boss)) {
-                boss.bossLives -= 1;
+            if (is_colliding_bbs(check_bbs->bullet, boss_clw)) {
+                boss_clw.changeLives(-1);
                 if (!megalovania_is_playing) {
                     PlaySound("..//..//sounds//hit_boss.wav", NULL, SND_FILENAME | SND_ASYNC);
                 }

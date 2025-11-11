@@ -83,7 +83,7 @@ void draw_scene() {
         sprintf(closing, "To close game press ESC");
         draw_text((WINDOW_WIDTH / 2) - 120, WINDOW_HEIGHT / 2 - 80, closing);
 
-    } else if (boss.bossLives == 0) {
+    } else if (boss_clw.getLives() == 0) {
         //draw background
         draw_rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 10);
 
@@ -117,7 +117,7 @@ void draw_scene() {
         }
 
         //draw boss
-        draw_rectangle(boss.bossX, boss.bossY, boss.bossSize, boss.bossSize, 6);
+        draw_rectangle(boss_clw.getPosX(), boss_clw.getPosY(), boss_clw.getSize(), boss_clw.getSize(), 6);
 
         //...
 
@@ -137,7 +137,7 @@ void draw_scene() {
 
         //draw boss_lives
         char boss_lives[DRAW_TEXT_LENGTH];
-        sprintf(boss_lives, "Boss lives: %d", boss.bossLives);
+        sprintf(boss_lives, "Boss lives: %d", boss_clw.getLives());
         draw_text(10, WINDOW_HEIGHT - 50, boss_lives);
 
     } else {

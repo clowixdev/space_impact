@@ -338,7 +338,7 @@ void init_game() {
     //!objects initialization
     player_clw.init();
 
-    printf("PLAYER:\n\t%d\n\t%d\n\t%d\n\t%d\n\t%d\n\t%d",
+    printf("PLAYER:\n\t%d\n\t%d\n\t%d\n\t%d\n\t%d\n\t%d\n",
         player_clw.getSize(),
         player_clw.getPosX(),
         player_clw.getPosY(),
@@ -355,17 +355,25 @@ void init_game() {
     // player.playerLives = 3;
     // player.godMode = false;
 
-    boss.bossLives = 10;
-    boss.bossSize = 70;
-    boss.bossY = WINDOW_HEIGHT / 2;
-    boss.bossX = WINDOW_WIDTH - boss.bossSize * 2;
+    boss_clw.init();
+
+    printf("BOSS:\n\t%d\n\t%d\n\t%d\n\t%d\n",
+        boss_clw.getSize(),
+        boss_clw.getPosX(),
+        boss_clw.getPosY(),
+        boss_clw.getLives()
+    );
+
+    // boss.bossLives = 10;
+    // boss.bossSize = 70;
+    // boss.bossY = WINDOW_HEIGHT / 2;
+    // boss.bossX = WINDOW_WIDTH - boss.bossSize * 2;
+    // boss.reached_top = true;
+    // boss.reached_bot = false;
 
     heart.heartSize = 30;
     heart.spawn = true;
     heart.heartX = WINDOW_WIDTH - heart.heartSize;
     heart.heartY = -heart.heartSize;
     heart.heartSpeed = 4;
-
-    boss.reached_top = true;
-    boss.reached_bot = false;
 }
