@@ -371,9 +371,19 @@ void init_game() {
     // boss.reached_top = true;
     // boss.reached_bot = false;
 
-    heart.heartSize = 30;
-    heart.spawn = true;
-    heart.heartX = WINDOW_WIDTH - heart.heartSize;
-    heart.heartY = -heart.heartSize;
-    heart.heartSpeed = 4;
+    heart_clw.init();
+
+    printf("HEART:\n\t%d\n\t%d\n\t%d\n\t%d\n\t%d\n",
+        heart_clw.getSize(),
+        heart_clw.getPosX(),
+        heart_clw.getPosY(),
+        heart_clw.getSpeed(),
+        heart_clw.isSpawning()
+    );
+
+    // heart.heartSize = 30;
+    // heart.spawn = true;
+    // heart.heartX = WINDOW_WIDTH - heart.heartSize;
+    // heart.heartY = -heart.heartSize;
+    // heart.heartSpeed = 4;
 }

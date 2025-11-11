@@ -4,6 +4,7 @@
 #include "structures.h"
 #include "./classes/player.h"
 #include "./classes/boss.h"
+#include "./classes/heart.h"
 #include "lists.h"
 
 extern GLuint textures[TEXTURES_AMT+1];
@@ -20,11 +21,12 @@ extern int boss_delay;
 
 // extern struct Player player;
 // extern struct Boss boss;
-extern struct Heart heart;
+// extern struct Heart heart;
 extern struct Menu main_menu;
 
 extern class PlayerClass player_clw;
 extern class BossClass boss_clw;
+extern class HeartClass heart_clw;
 
 extern struct Bullet_list *bullets;
 extern struct Bullet_list *boss_bullets;

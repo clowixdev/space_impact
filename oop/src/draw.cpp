@@ -145,7 +145,7 @@ void draw_scene() {
         draw_rectangle(player_clw.getPosX() - player_clw.getSize() / 2, player_clw.getPosY(), player_clw.getSize(), player_clw.getSize(), 0);
 
         //draw heart
-        draw_rectangle(heart.heartX, heart.heartY, heart.heartSize, heart.heartSize, 13);
+        draw_rectangle(heart_clw.getPosX(), heart_clw.getPosY(), heart_clw.getSize(), heart_clw.getSize(), 13);
         
         //draw bullet
         struct Bullet_list *bullet_elem = bullets;

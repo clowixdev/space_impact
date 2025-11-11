@@ -103,13 +103,13 @@ bool is_colliding_ap(struct Asteroid *a, PlayerClass p) {
     }
 }
 
-bool is_colliding_hp(struct Heart h, PlayerClass p) {
+bool is_colliding_hp(HeartClass h, PlayerClass p) {
     if (
-        (h.heartY >= p.getPosY() && h.heartY <= p.getPosY() + p.getSize() \
-        && h.heartX >= p.getPosX() && h.heartX <= p.getPosX() + p.getSize())
+        (h.getPosY() >= p.getPosY() && h.getPosY() <= p.getPosY() + p.getSize() \
+        && h.getPosX() >= p.getPosX() && h.getPosX() <= p.getPosX() + p.getSize())
         ||
-        (h.heartY+h.heartSize >= p.getPosY() && h.heartY+h.heartSize <= p.getPosY() + p.getSize() \
-        && h.heartX+h.heartSize >= p.getPosX() && h.heartX+h.heartSize <= p.getPosX() + p.getSize())
+        (h.getPosY()+h.getSize() >= p.getPosY() && h.getPosY()+h.getSize() <= p.getPosY() + p.getSize() \
+        && h.getPosX()+h.getSize() >= p.getPosX() && h.getPosX()+h.getSize() <= p.getPosX() + p.getSize())
         )
     {
         return true;
@@ -256,23 +256,23 @@ void update(int aux) {
     for_bullet_list(bullets, update_bullet_position);
 
     //update heart position
-    if (heart.heartX >= 0) {
-        heart.heartX -= heart.heartSpeed;
-        if (heart.heartX <= 0) {
-            heart.heartY = -heart.heartSize;
-            heart.heartX = -heart.heartSize;
+    if (heart_clw.getPosX() >= 0) {
+        heart_clw.changePosX(-heart_clw.getSpeed());
+        if (heart_clw.getPosX() <= 0) {
+            heart_clw.setPosY(-heart_clw.getSize());
+            heart_clw.setPosX(-heart_clw.getSize());
         }
     }
 
     //check heart-player collision
-    if (is_colliding_hp(heart, player_clw)) {
+    if (is_colliding_hp(heart_clw, player_clw)) {
         player_clw.changeLives(1);
         if (!megalovania_is_playing) {
             PlaySound("..//..//sounds//heal.wav", NULL, SND_FILENAME | SND_ASYNC);
         }
 
-        heart.heartY = -heart.heartSize;
-        heart.heartX = -heart.heartSize;
+        heart_clw.setPosY(-heart_clw.getSize());
+        heart_clw.setPosX(-heart_clw.getSize());
     }
     
     //!small_asteroid
@@ -297,13 +297,13 @@ void update(int aux) {
                     remove_from_blist(bullets, check_bsa_b->bullet);
 
                     int rand_int = rand() % 100;
-                    if (rand_int > 70 && player_clw.getLives() < 3 && heart.heartX < 0) {
+                    if (rand_int > 70 && player_clw.getLives() < 3 && heart_clw.getPosX() < 0) {
                         if (!megalovania_is_playing) {
                             PlaySound("..//..//sounds//heart_spawn.wav", NULL, SND_FILENAME | SND_ASYNC);
                         }
                         
-                        heart.heartX = check_bsa_a->asteroid->asteroidX;
-                        heart.heartY = check_bsa_a->asteroid->asteroidY;
+                        heart_clw.setPosX(check_bsa_a->asteroid->asteroidX);
+                        heart_clw.setPosY(check_bsa_a->asteroid->asteroidY);
                     }
 
                     check_bsa_a->asteroid->asteroidY = rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - check_bsa_a->asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;

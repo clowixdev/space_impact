@@ -16,11 +16,15 @@
 
 #include "classes/player.h"
 #include "classes/boss.h"
+#include "classes/heart.h"
 
 class BossClass *boss_clw = new BossClass();
 
-// struct Player player;
-// struct Boss boss;
+struct Player player;
+struct Boss boss;
+
+class HeartClass *heart_clw = new HeartClass();
+
 struct Heart heart;
 struct Menu main_menu;
 
