@@ -9,6 +9,8 @@ x86_64-w64-mingw32-g++ "${workspaceRoot}src/main.cpp" \
 "${workspaceRoot}src/classes/asteroid.cpp" \
 "${workspaceRoot}src/classes/bullet.cpp" \
 "${workspaceRoot}src/classes/player.cpp" \
+"${workspaceRoot}src/classes/boss.cpp" \
+"${workspaceRoot}src/classes/heart.cpp" \
 "-I${workspaceRoot}include" \
 "-I${workspaceRoot}../../dependencies/STB_IMAGE/include" \
 "-I${workspaceRoot}../../dependencies/GLFW/include" \
