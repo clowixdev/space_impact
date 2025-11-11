@@ -17,7 +17,7 @@ extern bool megalovania_is_playing;
 
 extern int boss_delay;
 
-extern struct Player player;
+// extern struct Player player;
 extern struct Boss boss;
 extern struct Heart heart;
 extern struct Menu main_menu;

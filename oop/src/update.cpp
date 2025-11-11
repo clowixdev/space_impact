@@ -35,8 +35,8 @@ void add_bullet(struct Bullet_list *bl_head) {
         } else if (is_bullet_on_screen(temp->bullet) && temp->next != NULL) {
             temp = temp->next;
         } else if (!is_bullet_on_screen(temp->bullet)) {
-            temp->bullet->bulletY = player.playerY + player.playerSize / 2 - temp->bullet->bulletSize / 2;
-            temp->bullet->bulletX = player.playerX;
+            temp->bullet->bulletY = player_clw.getPosY() + player_clw.getSize() / 2 - temp->bullet->bulletSize / 2;
+            temp->bullet->bulletX = player_clw.getPosX();
 
             break;
         }
@@ -88,13 +88,13 @@ void add_asteroid(struct Asteroid_list *al_head) {
     }
 }
 
-bool is_colliding_ap(struct Asteroid *a, struct Player p) {
+bool is_colliding_ap(struct Asteroid *a, PlayerClass p) {
     if (
-        (a->asteroidY >= p.playerY && a->asteroidY <= p.playerY + p.playerSize \
-        && a->asteroidX >= p.playerX && a->asteroidX <= p.playerX + p.playerSize)
+        (a->asteroidY >= p.getPosY() && a->asteroidY <= p.getPosY() + p.getSize() \
+        && a->asteroidX >= p.getPosX() && a->asteroidX <= p.getPosX() + p.getSize())
         ||
-        (a->asteroidY+a->asteroidSize >= p.playerY && a->asteroidY+a->asteroidSize <= p.playerY + p.playerSize \
-        && a->asteroidX+a->asteroidSize >= p.playerX && a->asteroidX+a->asteroidSize <= p.playerX + p.playerSize)
+        (a->asteroidY+a->asteroidSize >= p.getPosY() && a->asteroidY+a->asteroidSize <= p.getPosY() + p.getSize() \
+        && a->asteroidX+a->asteroidSize >= p.getPosX() && a->asteroidX+a->asteroidSize <= p.getPosX() + p.getSize())
         )
     {
         return true;
@@ -103,13 +103,13 @@ bool is_colliding_ap(struct Asteroid *a, struct Player p) {
     }
 }
 
-bool is_colliding_hp(struct Heart h, struct Player p) {
+bool is_colliding_hp(struct Heart h, PlayerClass p) {
     if (
-        (h.heartY >= p.playerY && h.heartY <= p.playerY + p.playerSize \
-        && h.heartX >= p.playerX && h.heartX <= p.playerX + p.playerSize)
+        (h.heartY >= p.getPosY() && h.heartY <= p.getPosY() + p.getSize() \
+        && h.heartX >= p.getPosX() && h.heartX <= p.getPosX() + p.getSize())
         ||
-        (h.heartY+h.heartSize >= p.playerY && h.heartY+h.heartSize <= p.playerY + p.playerSize \
-        && h.heartX+h.heartSize >= p.playerX && h.heartX+h.heartSize <= p.playerX + p.playerSize)
+        (h.heartY+h.heartSize >= p.getPosY() && h.heartY+h.heartSize <= p.getPosY() + p.getSize() \
+        && h.heartX+h.heartSize >= p.getPosX() && h.heartX+h.heartSize <= p.getPosX() + p.getSize())
         )
     {
         return true;
@@ -133,13 +133,13 @@ bool is_colliding_ba(struct Bullet *b, struct Asteroid *a) {
     }
 }
 
-bool is_colliding_bp(struct Bullet *b, struct Player p) {
+bool is_colliding_bp(struct Bullet *b, PlayerClass p) {
     if (
-        (b->bulletY >= p.playerY && b->bulletY <= p.playerY + p.playerSize \
-        && b->bulletX >= p.playerX && b->bulletX <= p.playerX + p.playerSize)
+        (b->bulletY >= p.getPosY() && b->bulletY <= p.getPosY() + p.getSize() \
+        && b->bulletX >= p.getPosX() && b->bulletX <= p.getPosX() + p.getSize())
         ||
-        (b->bulletY+b->bulletSize >= p.playerY && b->bulletY+b->bulletSize <= p.playerY + p.playerSize \
-        && b->bulletX+b->bulletSize >= p.playerX && b->bulletX+b->bulletSize <= p.playerX + p.playerSize)
+        (b->bulletY+b->bulletSize >= p.getPosY() && b->bulletY+b->bulletSize <= p.getPosY() + p.getSize() \
+        && b->bulletX+b->bulletSize >= p.getPosX() && b->bulletX+b->bulletSize <= p.getPosX() + p.getSize())
         )
     {
         return true;
@@ -185,8 +185,8 @@ void update_bullet_position(struct Bullet *bullet) {
 
 void update_asteroid_position(struct Asteroid *asteroid) {
     if (is_asteroid_on_screen(asteroid)) {
-        asteroid->asteroidX -= asteroid->asteroidSpeed + (3 * (player.currentLevel - 1));
-    } else if (!is_asteroid_on_screen(asteroid) && player.playerLives > 0) {
+        asteroid->asteroidX -= asteroid->asteroidSpeed + (3 * (player_clw.getLevel() - 1));
+    } else if (!is_asteroid_on_screen(asteroid) && player_clw.getLives() > 0) {
         asteroid->asteroidY = rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
         asteroid->asteroidX = WINDOW_WIDTH - asteroid->asteroidSize;
     }
@@ -197,7 +197,7 @@ void update(int aux) {
         add_bullet(bullets);
     }
 
-    if (player.playerLives == 0 && player_is_dead == false) {
+    if (player_clw.getLives() == 0 && player_is_dead == false) {
         if (!megalovania_is_playing) {
             PlaySound("..//..//sounds//lose.wav", NULL, SND_FILENAME | SND_ASYNC);
         }
@@ -215,7 +215,7 @@ void update(int aux) {
         spawn_asteroids = false;
     }
 
-    if (player.playerScore == FOR_SECOND_LEVEL && changed_to_second == false) {
+    if (player_clw.getScore() == FOR_SECOND_LEVEL && changed_to_second == false) {
         if (!megalovania_is_playing) {
             PlaySound("..//..//sounds//next_level.wav", NULL, SND_FILENAME | SND_ASYNC);
         }
@@ -224,11 +224,11 @@ void update(int aux) {
         add_asteroid(medium_asteroids);
         add_asteroid(big_asteroids);
 
-        player.currentLevel = 2;
+        player_clw.setLevel(2);
         changed_to_second = true;
     }
 
-    if (player.playerScore == FOR_THIRD_LEVEL && changed_to_third == false) {
+    if (player_clw.getScore() == FOR_THIRD_LEVEL && changed_to_third == false) {
         if (!megalovania_is_playing) {
             PlaySound("..//..//sounds//next_level.wav", NULL, SND_FILENAME | SND_ASYNC);
         }
@@ -237,16 +237,16 @@ void update(int aux) {
         add_asteroid(medium_asteroids);
         add_asteroid(big_asteroids);
 
-        player.currentLevel = 3;
+        player_clw.setLevel(3);
         changed_to_third = true;
     }
 
-    if (player.playerScore == FOR_BOSS_LEVEL && changed_to_fourth == false) {
+    if (player_clw.getScore() == FOR_BOSS_LEVEL && changed_to_fourth == false) {
         if (!megalovania_is_playing) {
             PlaySound("..//..//sounds//next_level.wav", NULL, SND_FILENAME | SND_ASYNC);
         }
         
-        player.currentLevel = 4;
+        player_clw.setLevel(4);
         
         spawn_asteroids = false;
         changed_to_fourth = true;
@@ -265,8 +265,8 @@ void update(int aux) {
     }
 
     //check heart-player collision
-    if (is_colliding_hp(heart, player)) {
-        player.playerLives += 1;
+    if (is_colliding_hp(heart, player_clw)) {
+        player_clw.changeLives(1);
         if (!megalovania_is_playing) {
             PlaySound("..//..//sounds//heal.wav", NULL, SND_FILENAME | SND_ASYNC);
         }
@@ -277,7 +277,7 @@ void update(int aux) {
     
     //!small_asteroid
     //update asteroid position
-    if (spawn_asteroids == true && player.currentLevel != 4) {
+    if (spawn_asteroids == true && player_clw.getLevel() != 4) {
         for_asteroid_list(small_asteroids, update_asteroid_position);
 
         //check bullet-asteroid collision
@@ -289,7 +289,7 @@ void update(int aux) {
             while (check_bsa_a != NULL) {
                 if (is_colliding_ba(check_bsa_b->bullet, check_bsa_a->asteroid) \
                 && (is_bullet_on_screen(check_bsa_b->bullet) && is_asteroid_on_screen(check_bsa_a->asteroid))) {
-                    player.playerScore += 1;
+                    player_clw.changeScore(1);
                     if (!megalovania_is_playing) {
                         PlaySound("..//..//sounds//hit_asteroid.wav", NULL, SND_FILENAME | SND_ASYNC);
                     }
@@ -297,7 +297,7 @@ void update(int aux) {
                     remove_from_blist(bullets, check_bsa_b->bullet);
 
                     int rand_int = rand() % 100;
-                    if (rand_int > 70 && player.playerLives < 3 && heart.heartX < 0) {
+                    if (rand_int > 70 && player_clw.getLives() < 3 && heart.heartX < 0) {
                         if (!megalovania_is_playing) {
                             PlaySound("..//..//sounds//heart_spawn.wav", NULL, SND_FILENAME | SND_ASYNC);
                         }
@@ -319,10 +319,10 @@ void update(int aux) {
         //check asteroid-player collision
         struct Asteroid_list *check_sap = small_asteroids;
         while (check_sap != NULL) {
-            if (is_colliding_ap(check_sap->asteroid, player) \
+            if (is_colliding_ap(check_sap->asteroid, player_clw) \
             && is_asteroid_on_screen(check_sap->asteroid)) {
-                if (!player.godMode) {
-                    player.playerLives -= 1;
+                if (!player_clw.inGodMode()) {
+                    player_clw.changeLives(-1);
                 }
                 if (!megalovania_is_playing) {
                     PlaySound("..//..//sounds//hit_player.wav", NULL, SND_FILENAME | SND_ASYNC);
@@ -338,7 +338,7 @@ void update(int aux) {
 
     //!medium_asteroid
     //update asteroid position
-    if (spawn_asteroids == true && player.currentLevel != 4) {
+    if (spawn_asteroids == true && player_clw.getLevel() != 4) {
         for_asteroid_list(medium_asteroids, update_asteroid_position);
 
         //check bullet-asteroid collision
@@ -350,7 +350,7 @@ void update(int aux) {
             while (check_bma_a != NULL) {
                 if (is_colliding_ba(check_bma_b->bullet, check_bma_a->asteroid) \
                 && (is_bullet_on_screen(check_bma_b->bullet) && is_asteroid_on_screen(check_bma_a->asteroid))) {
-                    player.playerScore += 1;
+                    player_clw.changeScore(1);
                     if (!megalovania_is_playing) {
                         PlaySound("..//..//sounds//hit_asteroid.wav", NULL, SND_FILENAME | SND_ASYNC);
                     }
@@ -369,10 +369,10 @@ void update(int aux) {
         //check asteroid-player collision
         struct Asteroid_list *check_map = medium_asteroids;
         while (check_map != NULL) {
-            if (is_colliding_ap(check_map->asteroid, player) \
+            if (is_colliding_ap(check_map->asteroid, player_clw) \
             && is_asteroid_on_screen(check_map->asteroid)) {
-                if (!player.godMode) {
-                    player.playerLives -= 1;
+                if (!player_clw.inGodMode()) {
+                    player_clw.changeLives(-1);
                 }
 
                 if (!megalovania_is_playing) {
@@ -388,7 +388,7 @@ void update(int aux) {
 
     //!big_asteroid
     //update asteroid position
-    if (spawn_asteroids == true && player.currentLevel != 4) {
+    if (spawn_asteroids == true && player_clw.getLevel() != 4) {
         for_asteroid_list(big_asteroids, update_asteroid_position);
 
         //check bullet-asteroid collision
@@ -400,7 +400,7 @@ void update(int aux) {
             while (check_bba_a != NULL) {
                 if (is_colliding_ba(check_bba_b->bullet, check_bba_a->asteroid) \
                 && (is_bullet_on_screen(check_bba_b->bullet) && is_asteroid_on_screen(check_bba_a->asteroid))) {
-                    player.playerScore += 1;
+                    player_clw.changeScore(1);
                     if (!megalovania_is_playing) {
                         PlaySound("..//..//sounds//hit_asteroid.wav", NULL, SND_FILENAME | SND_ASYNC);
                     }
@@ -420,10 +420,10 @@ void update(int aux) {
         //check asteroid-player collision
         struct Asteroid_list *check_bap = big_asteroids;
         while (check_bap != NULL) {
-            if (is_colliding_ap(check_bap->asteroid, player) \
+            if (is_colliding_ap(check_bap->asteroid, player_clw) \
             && is_asteroid_on_screen(check_bap->asteroid)) {
-                if (!player.godMode) {
-                    player.playerLives -= 1;
+                if (!player_clw.inGodMode()) {
+                    player_clw.changeLives(-1);
                 }
 
                 if (!megalovania_is_playing) {
@@ -438,7 +438,7 @@ void update(int aux) {
     }
 
     //! update boss
-    if (player.currentLevel == 4 && boss_is_dead == false) {
+    if (player_clw.getLevel() == 4 && boss_is_dead == false) {
         //boss movement
         if (boss.bossY >= boss.bossSize && boss.reached_top == true) {
             boss.bossY -= 3;
@@ -474,9 +474,9 @@ void update(int aux) {
         //boss_bullet - player collision
         struct Bullet_list *check_bsp = boss_bullets;
         while (check_bsp != NULL) {
-            if (is_colliding_bp(check_bsp->bullet, player)) {
-                if (!player.godMode) {
-                    player.playerLives -= 1;
+            if (is_colliding_bp(check_bsp->bullet, player_clw)) {
+                if (!player_clw.inGodMode()) {
+                    player_clw.changeLives(-1);
                 }
 
                 if (!megalovania_is_playing) {

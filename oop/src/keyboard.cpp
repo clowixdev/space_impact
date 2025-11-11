@@ -13,7 +13,7 @@
 void handle_keyboard(unsigned char key, int x, int y) {
     switch (key) {
         case 32: //SPACE
-            if (player.playerLives > 0) {
+            if (player_clw.getLives() > 0) {
                 add_bullet(bullets);
                 if (!megalovania_is_playing) {
                     PlaySound("..//..//sounds//shot.wav", NULL, SND_FILENAME | SND_ASYNC);
@@ -27,8 +27,8 @@ void handle_keyboard(unsigned char key, int x, int y) {
             break;
         case 97: //a
             megalovania_is_playing = true;
-            player.godMode = true;
-            player.playerScore = -9999;
+            player_clw.setGodMod(true);
+            player_clw.setScore(-9999);
             PlaySound("..//..//sounds//megalovania.wav", NULL, SND_FILENAME | SND_ASYNC);
 
             for (int amt = 0; amt < MAX_ASTEROIDS_IN_BENCH_MODE/3; amt++) {
@@ -47,27 +47,27 @@ void handle_keyboard(unsigned char key, int x, int y) {
 void handle_movement_keys(int key, int x, int y) {
     switch (key) {
         case GLUT_KEY_DOWN:
-            player.playerY -= 10;
-            if (player.playerY < BORDERS_SIZE) {
-                player.playerY = BORDERS_SIZE;
+            player_clw.changePosY(-10);
+            if (player_clw.getPosY() < BORDERS_SIZE) {
+                player_clw.setPosY(BORDERS_SIZE);
             }
             break;
         case GLUT_KEY_UP:
-            player.playerY += 10;
-            if (player.playerY + player.playerSize + BORDERS_SIZE > WINDOW_HEIGHT) {
-                player.playerY = WINDOW_HEIGHT - player.playerSize - BORDERS_SIZE;
+            player_clw.changePosY(10);
+            if (player_clw.getPosY() + player_clw.getSize() + BORDERS_SIZE > WINDOW_HEIGHT) {
+                player_clw.setPosY(WINDOW_HEIGHT - player_clw.getSize() - BORDERS_SIZE);
             }
             break;
         case GLUT_KEY_RIGHT:
-            player.playerX += 10;
-            if (player.playerX > player.playerSize + 200) {
-                player.playerX = player.playerSize + 200;
+            player_clw.changePosX(10);
+            if (player_clw.getPosX() > player_clw.getSize() + 200) {
+                player_clw.setPosX(player_clw.getSize() + 200);
             }
             break;
         case GLUT_KEY_LEFT:
-            player.playerX -= 10;
-            if (player.playerX < player.playerSize) {
-                player.playerX = player.playerSize;
+            player_clw.changePosX(-10);
+            if (player_clw.getPosX() < player_clw.getSize()) {
+                player_clw.setPosX(player_clw.getSize());
             }
             break;
     }

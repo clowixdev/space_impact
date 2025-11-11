@@ -55,15 +55,15 @@ void draw_scene() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     //draw background
-    if (player.playerLives == 3) {
+    if (player_clw.getLives() == 3) {
         draw_rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 9);
-    } else if (player.playerLives == 2) {
+    } else if (player_clw.getLives() == 2) {
         draw_rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 8);
-    } else if (player.playerLives == 1) {
+    } else if (player_clw.getLives() == 1) {
         draw_rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 7);
     }
 
-    if (player.playerLives == 0) {
+    if (player_clw.getLives() == 0) {
         //draw background
         draw_rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 10);
 
@@ -72,11 +72,11 @@ void draw_scene() {
         draw_text((WINDOW_WIDTH / 2) - 50, WINDOW_HEIGHT / 2, game_over);
         
         char score[DRAW_TEXT_LENGTH];
-        sprintf(score, "Score: %d", player.playerScore);
+        sprintf(score, "Score: %d", player_clw.getScore());
         draw_text((WINDOW_WIDTH / 2) - 45, WINDOW_HEIGHT / 2 - 40, score);
         
         char level[DRAW_TEXT_LENGTH];
-        sprintf(level, "Level: %d", player.currentLevel);
+        sprintf(level, "Level: %d", player_clw.getLevel());
         draw_text((WINDOW_WIDTH / 2) - 40, WINDOW_HEIGHT / 2 - 60, level);
         
         char closing[DRAW_TEXT_LENGTH];
@@ -92,20 +92,20 @@ void draw_scene() {
         draw_text((WINDOW_WIDTH / 2) - 50, WINDOW_HEIGHT / 2, game_end);
         
         char score[DRAW_TEXT_LENGTH];
-        sprintf(score, "Score: %d", player.playerScore);
+        sprintf(score, "Score: %d", player_clw.getScore());
         draw_text((WINDOW_WIDTH / 2) - 45, WINDOW_HEIGHT / 2 - 40, score);
         
         char level[DRAW_TEXT_LENGTH];
-        sprintf(level, "Level: %d", player.currentLevel);
+        sprintf(level, "Level: %d", player_clw.getLevel());
         draw_text((WINDOW_WIDTH / 2) - 40, WINDOW_HEIGHT / 2 - 60, level);
         
         char closing[DRAW_TEXT_LENGTH];
         sprintf(closing, "To close game press ESC");
         draw_text((WINDOW_WIDTH / 2) - 120, WINDOW_HEIGHT / 2 - 80, closing);
         
-    } else if (player.currentLevel == 4) {
+    } else if (player_clw.getLevel() == 4) {
         //draw player
-        draw_rectangle(player.playerX - player.playerSize / 2, player.playerY, player.playerSize, player.playerSize, 0);
+        draw_rectangle(player_clw.getPosX() - player_clw.getSize() / 2, player_clw.getPosY(), player_clw.getSize(), player_clw.getSize(), 0);
 
         //draw player_bullet
         struct Bullet_list *bullet_elem = bullets;
@@ -142,7 +142,7 @@ void draw_scene() {
 
     } else {
         //draw player
-        draw_rectangle(player.playerX - player.playerSize / 2, player.playerY, player.playerSize, player.playerSize, 0);
+        draw_rectangle(player_clw.getPosX() - player_clw.getSize() / 2, player_clw.getPosY(), player_clw.getSize(), player_clw.getSize(), 0);
 
         //draw heart
         draw_rectangle(heart.heartX, heart.heartY, heart.heartSize, heart.heartSize, 13);
@@ -185,12 +185,12 @@ void draw_scene() {
         
         //draw level
         char level[DRAW_TEXT_LENGTH];
-        sprintf(level, "Level: %d", player.currentLevel);
+        sprintf(level, "Level: %d", player_clw.getLevel());
         draw_text(10, WINDOW_HEIGHT - 30, level);
 
         //draw score
         char score[DRAW_TEXT_LENGTH];
-        sprintf(score, "Score: %d", player.playerScore);
+        sprintf(score, "Score: %d", player_clw.getScore());
         draw_text(10, WINDOW_HEIGHT - 50, score);
 
         //draw fps

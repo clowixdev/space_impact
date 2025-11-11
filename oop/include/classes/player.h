@@ -31,6 +31,8 @@ public:
     void setGodMod(bool mode);
 
     void init();
+    void changeLives(int life);
+    void changeScore(int score);
 
 private:
     int mCurrentLevel;

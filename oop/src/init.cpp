@@ -337,15 +337,23 @@ void init_game() {
 
     //!objects initialization
     player_clw.init();
-    printf("PLAYER:\n\t%d\n\t%d\n\t%d\n\t%d", player_clw.getScore(), player_clw.getSize(), player_clw.getPosX(), player_clw.getPosY());
 
-    player.currentLevel = 1;
-    player.playerSize = 50;
-    player.playerY = WINDOW_HEIGHT / 2;
-    player.playerX = player.playerSize;
-    player.playerScore = 0;
-    player.playerLives = 3;
-    player.godMode = false;
+    printf("PLAYER:\n\t%d\n\t%d\n\t%d\n\t%d\n\t%d\n\t%d",
+        player_clw.getSize(),
+        player_clw.getPosX(),
+        player_clw.getPosY(),
+        player_clw.getScore(),
+        player_clw.getLevel(),
+        player_clw.getLives()
+    );
+
+    // player.currentLevel = 1;
+    // player.playerSize = 50;
+    // player.playerY = WINDOW_HEIGHT / 2;
+    // player.playerX = player.playerSize;
+    // player.playerScore = 0;
+    // player.playerLives = 3;
+    // player.godMode = false;
 
     boss.bossLives = 10;
     boss.bossSize = 70;

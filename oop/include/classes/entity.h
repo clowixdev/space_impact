@@ -30,6 +30,14 @@ public:
         this->mEntityY = y;
     }
 
+    void changePosX(int x) {
+        this->mEntityX += x;
+    }
+
+    void changePosY(int y) {
+        this->mEntityY += y;
+    }
+
 
 private:
     int mEntitySize;
