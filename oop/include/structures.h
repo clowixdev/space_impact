@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include "./classes/bullet.h"
+#include "./classes/asteroid.h"
 
 struct Player {
     int currentLevel;
@@ -55,7 +56,7 @@ struct Bullet_list {
 };
 
 struct Asteroid_list {
-    struct Asteroid *asteroid;
+    struct AsteroidClass *asteroid;
     struct Asteroid_list *next;
 };
 

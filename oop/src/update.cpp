@@ -9,7 +9,7 @@
 #include "lists.h"
 #include "extern_pointers.h"
 
-bool is_bullet_on_screen(class BulletClass *b) {
+bool is_bullet_on_screen(BulletClass *b) {
     if (b->getPosX() >= 0 && b->getPosX() <= WINDOW_WIDTH) {
         return true;
     } else {
@@ -17,8 +17,8 @@ bool is_bullet_on_screen(class BulletClass *b) {
     }
 }
 
-bool is_asteroid_on_screen(struct Asteroid *a) {
-    if (a->asteroidX >= 0 && a->asteroidX <= WINDOW_WIDTH) {
+bool is_asteroid_on_screen(AsteroidClass *a) {
+    if (a->getPosX() >= 0 && a->getPosX() <= WINDOW_WIDTH) {
         return true;
     } else {
         return false;
@@ -78,8 +78,8 @@ void add_asteroid(struct Asteroid_list *al_head) {
             struct Asteroid_list *al_elem = init_asteroid_list_elem(asteroid_type);
             temp->next = al_elem;
 
-            temp->next->asteroid->asteroidY = rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - temp->asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
-            temp->next->asteroid->asteroidX = WINDOW_WIDTH - temp->asteroid->asteroidSize;
+            temp->next->asteroid->setPosY(rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - temp->asteroid->getSize()) - BORDERS_SIZE + 1) + BORDERS_SIZE);
+            temp->next->asteroid->setPosX(WINDOW_WIDTH - temp->asteroid->getSize());
 
             break;
         }
@@ -88,13 +88,13 @@ void add_asteroid(struct Asteroid_list *al_head) {
     }
 }
 
-bool is_colliding_ap(struct Asteroid *a, PlayerClass p) {
+bool is_colliding_ap(AsteroidClass *a, PlayerClass p) {
     if (
-        (a->asteroidY >= p.getPosY() && a->asteroidY <= p.getPosY() + p.getSize() \
-        && a->asteroidX >= p.getPosX() && a->asteroidX <= p.getPosX() + p.getSize())
+        (a->getPosY() >= p.getPosY() && a->getPosY() <= p.getPosY() + p.getSize() \
+        && a->getPosX() >= p.getPosX() && a->getPosX() <= p.getPosX() + p.getSize())
         ||
-        (a->asteroidY+a->asteroidSize >= p.getPosY() && a->asteroidY+a->asteroidSize <= p.getPosY() + p.getSize() \
-        && a->asteroidX+a->asteroidSize >= p.getPosX() && a->asteroidX+a->asteroidSize <= p.getPosX() + p.getSize())
+        (a->getPosY()+a->getSize() >= p.getPosY() && a->getPosY()+a->getSize() <= p.getPosY() + p.getSize() \
+        && a->getPosX()+a->getSize() >= p.getPosX() && a->getPosX()+a->getSize() <= p.getPosX() + p.getSize())
         )
     {
         return true;
@@ -118,13 +118,13 @@ bool is_colliding_hp(HeartClass h, PlayerClass p) {
     }
 }
 
-bool is_colliding_ba(class BulletClass *b, struct Asteroid *a) {
+bool is_colliding_ba(BulletClass *b, AsteroidClass *a) {
     if (
-        (b->getPosY() >= a->asteroidY && b->getPosY() <= a->asteroidY + a->asteroidSize \
-        && b->getPosX() >= a->asteroidX && b->getPosX() <= a->asteroidX + a->asteroidSize)
+        (b->getPosY() >= a->getPosY() && b->getPosY() <= a->getPosY() + a->getSize() \
+        && b->getPosX() >= a->getPosX() && b->getPosX() <= a->getPosX() + a->getSize())
         ||
-        (b->getPosY()+b->getSize() >= a->asteroidY && b->getPosY()+b->getSize() <= a->asteroidY + a->asteroidSize \
-        && b->getPosX()+b->getSize() >= a->asteroidX && b->getPosX()+b->getSize() <= a->asteroidX + a->asteroidSize)
+        (b->getPosY()+b->getSize() >= a->getPosY() && b->getPosY()+b->getSize() <= a->getPosY() + a->getSize() \
+        && b->getPosX()+b->getSize() >= a->getPosX() && b->getPosX()+b->getSize() <= a->getPosX() + a->getSize())
         ) 
     {
         return true;
@@ -183,12 +183,12 @@ void update_bullet_position(BulletClass *bullet) {
     }
 }
 
-void update_asteroid_position(struct Asteroid *asteroid) {
+void update_asteroid_position(AsteroidClass *asteroid) {
     if (is_asteroid_on_screen(asteroid)) {
-        asteroid->asteroidX -= asteroid->asteroidSpeed + (3 * (player_clw.getLevel() - 1));
+        asteroid->changePosX(-(asteroid->getSpeed() + (3 * (player_clw.getLevel() - 1))));
     } else if (!is_asteroid_on_screen(asteroid) && player_clw.getLives() > 0) {
-        asteroid->asteroidY = rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
-        asteroid->asteroidX = WINDOW_WIDTH - asteroid->asteroidSize;
+        asteroid->setPosY(rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - asteroid->getSize()) - BORDERS_SIZE + 1) + BORDERS_SIZE);
+        asteroid->setPosX(WINDOW_WIDTH - asteroid->getSize());
     }
 }
 
@@ -302,12 +302,12 @@ void update(int aux) {
                             PlaySound("..//..//sounds//heart_spawn.wav", NULL, SND_FILENAME | SND_ASYNC);
                         }
                         
-                        heart_clw.setPosX(check_bsa_a->asteroid->asteroidX);
-                        heart_clw.setPosY(check_bsa_a->asteroid->asteroidY);
+                        heart_clw.setPosX(check_bsa_a->asteroid->getPosX());
+                        heart_clw.setPosY(check_bsa_a->asteroid->getPosY());
                     }
 
-                    check_bsa_a->asteroid->asteroidY = rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - check_bsa_a->asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
-                    check_bsa_a->asteroid->asteroidX = WINDOW_WIDTH - check_bsa_a->asteroid->asteroidSize;
+                    check_bsa_a->asteroid->setPosY(rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - check_bsa_a->asteroid->getSize()) - BORDERS_SIZE + 1) + BORDERS_SIZE);
+                    check_bsa_a->asteroid->setPosX(WINDOW_WIDTH - check_bsa_a->asteroid->getSize());
 
                     break;
                 }
@@ -328,8 +328,8 @@ void update(int aux) {
                     PlaySound("..//..//sounds//hit_player.wav", NULL, SND_FILENAME | SND_ASYNC);
                 }
 
-                check_sap->asteroid->asteroidY = rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - check_sap->asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
-                check_sap->asteroid->asteroidX = WINDOW_WIDTH - check_sap->asteroid->asteroidSize;
+                check_sap->asteroid->setPosY(rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - check_sap->asteroid->getSize()) - BORDERS_SIZE + 1) + BORDERS_SIZE);
+                check_sap->asteroid->setPosX(WINDOW_WIDTH - check_sap->asteroid->getSize());
             }
             check_sap = check_sap->next;
         }
@@ -356,8 +356,8 @@ void update(int aux) {
                     }
                     remove_from_blist(bullets, check_bma_b->bullet);
 
-                    check_bma_a->asteroid->asteroidY = rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - check_bma_a->asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
-                    check_bma_a->asteroid->asteroidX = WINDOW_WIDTH - check_bma_a->asteroid->asteroidSize;
+                    check_bma_a->asteroid->setPosY(rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - check_bma_a->asteroid->getSize()) - BORDERS_SIZE + 1) + BORDERS_SIZE);
+                    check_bma_a->asteroid->setPosX(WINDOW_WIDTH - check_bma_a->asteroid->getSize());
 
                     break;
                 }
@@ -379,8 +379,8 @@ void update(int aux) {
                     PlaySound("..//..//sounds//hit_player.wav", NULL, SND_FILENAME | SND_ASYNC);
                 }
 
-                check_map->asteroid->asteroidY = rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - check_map->asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
-                check_map->asteroid->asteroidX = WINDOW_WIDTH - check_map->asteroid->asteroidSize;
+                check_map->asteroid->setPosY(rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - check_map->asteroid->getSize()) - BORDERS_SIZE + 1) + BORDERS_SIZE);
+                check_map->asteroid->setPosX(WINDOW_WIDTH - check_map->asteroid->getSize());
             }
             check_map = check_map->next;
         }
@@ -407,8 +407,8 @@ void update(int aux) {
                     
                     remove_from_blist(bullets, check_bba_b->bullet);
 
-                    check_bba_a->asteroid->asteroidY = rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - check_bba_a->asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
-                    check_bba_a->asteroid->asteroidX = WINDOW_WIDTH - check_bba_a->asteroid->asteroidSize;
+                    check_bba_a->asteroid->setPosY(rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - check_bba_a->asteroid->getSize()) - BORDERS_SIZE + 1) + BORDERS_SIZE);
+                    check_bba_a->asteroid->setPosX(WINDOW_WIDTH - check_bba_a->asteroid->getSize());
 
                     break;
                 }
@@ -430,8 +430,8 @@ void update(int aux) {
                     PlaySound("..//..//sounds//hit_player.wav", NULL, SND_FILENAME | SND_ASYNC);
                 }
 
-                check_bap->asteroid->asteroidY = rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - check_bap->asteroid->asteroidSize) - BORDERS_SIZE + 1) + BORDERS_SIZE;
-                check_bap->asteroid->asteroidX = WINDOW_WIDTH - check_bap->asteroid->asteroidSize;
+                check_bap->asteroid->setPosY(rand() % ((WINDOW_HEIGHT - BORDERS_SIZE - check_bap->asteroid->getSize()) - BORDERS_SIZE + 1) + BORDERS_SIZE);
+                check_bap->asteroid->setPosX(WINDOW_WIDTH - check_bap->asteroid->getSize());
             }
             check_bap = check_bap->next;
         }

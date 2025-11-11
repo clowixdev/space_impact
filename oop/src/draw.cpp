@@ -160,7 +160,7 @@ void draw_scene() {
         struct Asteroid_list *sa_elem = small_asteroids;
         while (sa_elem != NULL) {
             if (is_asteroid_on_screen(sa_elem->asteroid)) {
-                draw_rectangle(sa_elem->asteroid->asteroidX, sa_elem->asteroid->asteroidY, sa_elem->asteroid->asteroidSize, sa_elem->asteroid->asteroidSize, 3);
+                draw_rectangle(sa_elem->asteroid->getPosX(), sa_elem->asteroid->getPosY(), sa_elem->asteroid->getSize(), sa_elem->asteroid->getSize(), 3);
             }
             sa_elem = sa_elem->next;
         }
@@ -169,7 +169,7 @@ void draw_scene() {
         struct Asteroid_list *ma_elem = medium_asteroids;
         while (ma_elem != NULL) {
             if (is_asteroid_on_screen(ma_elem->asteroid)) {
-                draw_rectangle(ma_elem->asteroid->asteroidX, ma_elem->asteroid->asteroidY, ma_elem->asteroid->asteroidSize, ma_elem->asteroid->asteroidSize, 4);
+                draw_rectangle(ma_elem->asteroid->getPosX(), ma_elem->asteroid->getPosY(), ma_elem->asteroid->getSize(), ma_elem->asteroid->getSize(), 4);
             }
             ma_elem = ma_elem->next;
         }
@@ -178,7 +178,7 @@ void draw_scene() {
         struct Asteroid_list *ba_elem = big_asteroids;
         while (ba_elem != NULL) {
             if (is_asteroid_on_screen(ba_elem->asteroid)) {
-                draw_rectangle(ba_elem->asteroid->asteroidX, ba_elem->asteroid->asteroidY, ba_elem->asteroid->asteroidSize, ba_elem->asteroid->asteroidSize, 5);
+                draw_rectangle(ba_elem->asteroid->getPosX(), ba_elem->asteroid->getPosY(), ba_elem->asteroid->getSize(), ba_elem->asteroid->getSize(), 5);
             }
             ba_elem = ba_elem->next;
         }
