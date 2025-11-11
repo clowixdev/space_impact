@@ -1,0 +1,94 @@
+@startuml SpaceImpact
+class EntityClass {
+    -int mEntitySize;
+    -int mEntityPosX;
+    -int mEntityPosY;
+
+    +int getSize();
+    +int getPosX();
+    +int getPosY();
+
+    +void setSize(int);
+    +void setPosX(int);
+    +void setPosY(int);
+
+    +void changePosX(int);
+    +void changePosY(int);
+}
+
+class PlayerClass {
+    -int mCurrentLevel;
+    -int mPlayerScore;
+    -int mPlayerLives;
+    -bool mGodMode;
+    
+    +int getLevel();
+    +int getScore();
+    +int getLives();
+    +int inGodMode();
+
+    +void setLevel(int level);
+    +void setScore(int score);
+    +void setLives(int lives);
+    +void setGodMod(bool mode);
+
+    +void init();
+    +void changeLives(int life);
+    +void changeScore(int score);
+}
+
+class BossClass {
+    -int mBossLives;
+    -bool mReachedTop;
+    -bool mReachedBot;
+
+    +int getLives();
+    +bool hasReachedTop();
+    +bool hasReachedBot();
+
+    +void setLives(int);
+    +void setReachedTop(bool);
+    +void setReachedBot(bool);
+
+    +void init();
+    +void changeLives(int);
+}
+
+class AsteroidClass {
+    -int mAsteroidSpeed;
+
+    +int getSpeed();
+    +void setSpeed(int);
+
+    +void init(int, int);
+}
+
+class BulletClass {
+    -int mBulletSpeed;
+
+    +int getSpeed();
+
+    +void setSpeed(int);
+
+    +void init();
+}
+
+class HeartClass {
+    -bool mIsSpawning;
+    -int mHeartSpeed;
+
+    +int getSpeed();
+    +bool isSpawning();
+
+    +void setSpeed(int);
+    +void setSpawning(bool);
+
+    +void init();
+}
+
+EntityClass <|-- PlayerClass
+EntityClass <|-- BossClass
+EntityClass <|-- AsteroidClass
+EntityClass <|-- BulletClass
+EntityClass <|-- HeartClass
+@enduml
